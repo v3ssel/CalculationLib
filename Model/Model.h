@@ -8,14 +8,12 @@
 #include <string>
 
 #define NUMBER_ERR_CODE 301
-#define isNumber(x) ((x) >= '0' && (x) <= '9')
-#define isPrevNonOp(x) ((x) >= 2 && (x) <= 9)
 #define isRight(x) (((x) >= 'A' && (x) <= 'Z') || ((x) >= 'a' && (x) <= 'z'))
 
 typedef long double ld;
 
 namespace s21 {
-enum types {
+enum class ExpressionTypes {
     NUMBER,
     X,
     OPEN_BRACKET,
@@ -37,22 +35,23 @@ enum types {
     LOG
 };
 
-typedef struct data {
+struct Data {
     ld value;
     short priority;
-    short type;
-} data;
+    ExpressionTypes type;
+};
 
 class Model {
+    using ET = ExpressionTypes;
 public:
     double entryPoint(std::string& exp, const ld& x);
 
-    void calcMonthly(ld&, int64_t&, double, bool&, double*, double*, double*);
-    void calcLoan(ld&, int64_t&, double&, double&, double&, double&);
-    void calcTerm(ld, double&, double&, int64_t&, double&, double&);
+    // void calcMonthly(ld&, int64_t&, double, bool&, double*, double*, double*);
+    // void calcLoan(ld&, int64_t&, double&, double&, double&, double&);
+    // void calcTerm(ld, double&, double&, int64_t&, double&, double&);
 
-    void depositCalc(ld&, int64_t&, bool&, int64_t*, size_t&, size_t&, ld*, ld&,
-        short&, bool&, int64_t*, ld*, ld*, ld*, ld*);
+    // void depositCalc(ld&, int64_t&, bool&, int64_t*, size_t&, size_t&, ld*, ld&,
+    //     short&, bool&, int64_t*, ld*, ld*, ld*, ld*);
 
 private:
     bool parseExpresssion_(const std::string& exp, const ld& x);
@@ -68,9 +67,12 @@ private:
     void calcus_();
 
     void stackReverse_();
-    void setVals_(ld& v1, ld& v2, std::stack<data>& s);
+    void setVals_(ld& v1, ld& v2, std::stack<Data>& s);
 
-    std::stack<data> expression_;
+
+    bool isOperator(ET type);
+
+    std::stack<Data> expression_;
 };
 } // namespace s21
 
