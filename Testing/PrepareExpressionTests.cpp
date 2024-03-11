@@ -21,3 +21,15 @@ TEST(PrepareExpression, X) {
 
     EXPECT_EQ(model.getExpression(), "sin(acos(10))+acos(10)*1*10^acos(10)+2*acos(10)*acos(10)*10^acos(10)");
 }
+
+TEST(PrepareExpression, Combine) {
+    s21::CalculationModel model("SIN(x) * (1e2 + 21 - 1,324e-4) ^ (4e+2 * x)");
+    model.prepareExpression("acos(12) + cos(3)");
+
+    EXPECT_EQ(model.getExpression(), "sin(acos(12)+cos(3))*(1*10^2+21-1.324/10^4)^(4*10^2*acos(12)+cos(3))");
+}
+
+TEST(PrepareExpression, XwithX) {
+    s21::CalculationModel model("SIN(x) + x * 1ex + 2x * XeX");
+    EXPECT_THROW(model.prepareExpression("ACOS(x)"), std::invalid_argument);
+}

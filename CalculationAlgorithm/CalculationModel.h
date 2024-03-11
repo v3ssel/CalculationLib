@@ -19,6 +19,7 @@ public:
 
 private:
     void replaceX(std::string& str, const std::string &x);
+    void replaceE(std::string& str);
 
     std::stack<CalculationData> m_stack_;
 };

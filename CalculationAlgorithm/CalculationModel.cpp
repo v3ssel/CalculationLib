@@ -16,16 +16,14 @@ namespace s21 {
 
         std::string prepared = expression_;
 
-        auto prepare = [](std::string& str) {
+        auto prepare = [this](std::string& str) {
             str.erase(std::remove(str.begin(), str.end(), ' '), str.end());
 
             std::transform(str.begin(), str.end(), str.begin(),
                         [](unsigned char c) { return std::tolower(c); });
 
             Utils::stringReplace(str, ",", ".");
-            Utils::stringReplace(str, "e-", "/10^");
-            Utils::stringReplace(str, "e+", "*10^");
-            Utils::stringReplace(str, "e", "*10^");
+            replaceE(str);
         };
         
         prepare(prepared);
@@ -58,6 +56,7 @@ namespace s21 {
     
     void CalculationModel::replaceX(std::string &prepared, const std::string &x) {
         size_t x_pos = std::string::npos;
+
         while ((x_pos = prepared.find('x')) != std::string::npos) {
             std::string to_insert = x;
 
@@ -65,6 +64,26 @@ namespace s21 {
                 to_insert.insert(to_insert.begin(), '*');
 
             prepared.replace(x_pos, 1, to_insert);
+        }
+    }
+
+    void CalculationModel::replaceE(std::string& str) {
+        size_t x_pos = std::string::npos;
+
+        while ((x_pos = str.find('e')) != std::string::npos) {
+            std::string to_insert = "*10^";
+            size_t replace_count = 1;
+
+            if (x_pos != str.length() - 1) {
+                if (str[x_pos + 1] == '-') {
+                    to_insert[0] = '/';
+                    replace_count++;
+                } else if (str[x_pos + 1] == '+') {
+                    replace_count++;
+                }
+            }
+
+            str.replace(x_pos, replace_count, to_insert);
         }
     }
 }
