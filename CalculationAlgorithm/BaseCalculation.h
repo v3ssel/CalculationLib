@@ -6,14 +6,15 @@
 class BaseCalculation {
 public:
     double calculate(const std::string& exp, const std::string& x);
+    const std::string& getExpression() const;
 
+// protected:
     virtual void prepareExpression(const std::string& x) = 0;
     virtual void parseExpression() = 0;
     virtual void shuntingYard() = 0;
     virtual void calculation() = 0;
     virtual double getResult() = 0;
 
-protected:
     std::string expression_;
 };
 

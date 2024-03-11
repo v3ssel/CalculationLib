@@ -14,7 +14,7 @@ struct CalculationData {
         function = nullptr;
     }
 
-    long double value;
+    double value;
     short priority;
     ExpressionTypes type;
 

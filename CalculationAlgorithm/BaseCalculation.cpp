@@ -10,3 +10,7 @@ double BaseCalculation::calculate(const std::string &exp, const std::string &x) 
 
     return this->getResult();
 }
+
+const std::string &BaseCalculation::getExpression() const {
+    return expression_;
+}

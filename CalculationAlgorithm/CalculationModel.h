@@ -9,6 +9,8 @@
 namespace s21 {
 class CalculationModel : public BaseCalculation {
 public:
+    CalculationModel(const std::string& expression);
+
     void prepareExpression(const std::string& x) override;
     void parseExpression() override;
     void shuntingYard() override;
@@ -16,6 +18,8 @@ public:
     double getResult() override;
 
 private:
+    void replaceX(std::string& str, const std::string &x);
+
     std::stack<CalculationData> m_stack_;
 };
 }
