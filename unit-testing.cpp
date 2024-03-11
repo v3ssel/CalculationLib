@@ -139,6 +139,63 @@ TEST(Calculator, InvalidTest3)
 
     exp = "sqrt()";
     EXPECT_ANY_THROW(model.entryPoint(exp, 0));
+
+    exp = "cos+2";
+    EXPECT_ANY_THROW(model.entryPoint(exp, 0));
+    exp = "cos2";
+    EXPECT_ANY_THROW(model.entryPoint(exp, 0));
+    exp = "2mod+mod2";
+    EXPECT_ANY_THROW(model.entryPoint(exp, 0));
+
+    exp = "3+*5";
+    EXPECT_ANY_THROW(model.entryPoint(exp, 0));
+
+    exp = "sqrt(9)+7+";
+    EXPECT_ANY_THROW(model.entryPoint(exp, 0));
+
+    exp = "sin(45))";
+    EXPECT_ANY_THROW(model.entryPoint(exp, 0));
+
+    exp = "(4/2";
+    EXPECT_ANY_THROW(model.entryPoint(exp, 0));
+
+    exp = "log(10, 100))";
+    EXPECT_ANY_THROW(model.entryPoint(exp, 0));
+
+
+    exp = "3sin+sin3";
+    EXPECT_ANY_THROW(model.entryPoint(exp, 0));
+
+    exp = "log";
+    EXPECT_ANY_THROW(model.entryPoint(exp, 0));
+
+    exp = "sqrt+sqrt";
+    EXPECT_ANY_THROW(model.entryPoint(exp, 0));
+
+    exp = "tan()";
+    EXPECT_ANY_THROW(model.entryPoint(exp, 0));
+
+    exp = "log(10";
+    EXPECT_ANY_THROW(model.entryPoint(exp, 0));
+
+    exp = "1+2+3+";
+    EXPECT_ANY_THROW(model.entryPoint(exp, 0));
+
+    exp = "3+*5";
+    EXPECT_ANY_THROW(model.entryPoint(exp, 0));
+
+    exp = "(4+7)/";
+    EXPECT_ANY_THROW(model.entryPoint(exp, 0));
+    
+    exp = "2*(6-3))";
+    EXPECT_ANY_THROW(model.entryPoint(exp, 0));
+    
+    exp = "((8*2)-6/3) +";
+    EXPECT_ANY_THROW(model.entryPoint(exp, 0));
+    
+    exp = "3^2+";
+    EXPECT_ANY_THROW(model.entryPoint(exp, 0));
+    
 }
 
 // TEST(Credit, Annuity) {

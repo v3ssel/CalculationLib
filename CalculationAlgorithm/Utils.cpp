@@ -8,4 +8,20 @@ void Utils::stringReplace(std::string &original, const std::string &from, const 
         original.replace(pos, from.length(), to);
     }
 }
+
+double Utils::plus(double a, double b) {
+    return a + b;
+}
+
+double Utils::minus(double a, double b) {
+    return a - b;
+}
+
+double Utils::multiply(double a, double b) {
+    return a * b;
+}
+
+double Utils::divide(double a, double b) {
+    return a / b;
+}
 }

@@ -13,8 +13,8 @@ enum class ExpressionTypes {
     MOD,
     POWER,
     SQRT,
-    COS,
     SIN,
+    COS,
     TAN,
     ACOS,
     ASIN,
@@ -25,4 +25,3 @@ enum class ExpressionTypes {
 }
 
 #endif  // _EXPRESSIONTYPES_H_
-

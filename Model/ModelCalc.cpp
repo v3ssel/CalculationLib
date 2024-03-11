@@ -136,11 +136,11 @@ bool Model::parseExpresssion_(const std::string& exp, const ld& x) {
     return err_code;
 }
 
-void Model::getFullNumber_(const std::string& exp, size_t& i, size_t len) {
+void Model::getFullNumber_(const std::string& exp, size_t& i, size_t) {
     std::string num;
     size_t dot_counter = 0;
 
-    for (; i < len; ++i) {
+    for (; i < exp.length(); ++i) {
         if (exp[i] == '.')
             dot_counter++;
         if (std::isdigit(exp[i]) || exp[i] == '.') {
@@ -302,7 +302,7 @@ void Model::hardCases_(const char& caseType, const std::string& exp, size_t& i, 
 }
 
 void Model::lastChecker_(size_t& LBCnt, size_t& RBCnt, size_t& func_cnt, bool& err_code) {
-    if (LBCnt != RBCnt || (!expression_.empty() && (expression_.top().type != ET::CLOSED_BRACKET && expression_.top().type != ET::NUMBER && expression_.top().type != ET::X)) || ((func_cnt * 2) > (LBCnt + RBCnt)))
+    if (LBCnt != RBCnt || ((func_cnt * 2) > (LBCnt + RBCnt)))
         err_code = false;
 }
 
@@ -348,7 +348,7 @@ void Model::shuntingYard_() {
 
         if (expression_.empty() || check)
             break;
-            
+
         if (expression_.size() == 1)
             check = true;
     }

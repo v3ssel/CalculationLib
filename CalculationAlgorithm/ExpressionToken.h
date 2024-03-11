@@ -5,15 +5,6 @@
 
 namespace s21 {
 struct ExpressionToken {
-    ExpressionToken() {
-        value = 0;
-        priority = 0;
-        type = ExpressionTypes::NUMBER;
-        is_operator = false;
-        is_function = false;
-        function = nullptr;
-    }
-
     double value;
     short priority;
     ExpressionTypes type;

@@ -11,7 +11,8 @@ add_subdirectory(../CalculationAlgorithm CalculationAlgorithm)
 
 set(SOURCES 
     main_test.cpp
-    PrepareExpressionTests.cpp
+    ExpressionPreparatorTests.cpp
+    ExpressionParserTests.cpp
 )
 
 add_executable(${PROJECT_NAME} ${SOURCES})

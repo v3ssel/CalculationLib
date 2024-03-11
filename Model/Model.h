@@ -53,7 +53,7 @@ public:
     // void depositCalc(ld&, int64_t&, bool&, int64_t*, size_t&, size_t&, ld*, ld&,
     //     short&, bool&, int64_t*, ld*, ld*, ld*, ld*);
 
-private:
+// private:
     bool parseExpresssion_(const std::string& exp, const ld& x);
     void getFullNumber_(const std::string& exp, size_t& i, size_t len);
     void basicOps_(const std::string& exp, const size_t& i, bool& err_code,

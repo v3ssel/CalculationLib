@@ -14,8 +14,20 @@ set(SOURCES
     CalculationAlgorithm.h
     ExpressionPreparator.cpp
     ExpressionPreparator.h
+    ExpressionParser.cpp
+    ExpressionParser.h
 
+    Handlers/ExpressionHandler.cpp
     Handlers/ExpressionHandler.h
+    Handlers/NumberHandler.cpp
+    Handlers/NumberHandler.h
+    Handlers/BracketsHandler.cpp
+    Handlers/BracketsHandler.h
+    Handlers/OperatorsHandler.cpp
+    Handlers/OperatorsHandler.h
+    Handlers/FunctionsHandler.cpp
+    Handlers/FunctionsHandler.h
+    Handlers/HandleStatus.h
 
     ExpressionToken.h
     ExpressionTypes.h

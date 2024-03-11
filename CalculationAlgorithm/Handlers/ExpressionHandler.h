@@ -2,23 +2,23 @@
 #define _EXPRESSIONHANDLER_H_
 
 #include <string>
-#include <stack>
-#include "ExpressionToken.h"
+#include <list>
+#include <memory>
+#include "../ExpressionToken.h"
 #include "HandleStatus.h"
 
 namespace s21 {
 class ExpressionHandler {
 public:
-    virtual ExpressionHandler* setNext(ExpressionHandler* handler) = 0;
-    virtual HandleStatus handle(const std::string& expression, size_t& index, std::stack<ExpressionToken>& stack) = 0;
+    using ETypes = ExpressionTypes;
 
-    size_t function_counter;
-    
-    size_t left_bracket_counter;
-    size_t right_bracket_counter;
+    ExpressionHandler();
+    virtual ExpressionHandler* setNext(ExpressionHandler* handler);
+    virtual HandleStatus handle(const std::string& expression, size_t& index, std::list<ExpressionToken>& stack);
+    virtual void clean();
 
-    size_t last_index_of_left_bracket;
-    size_t last_index_of_right_bracket;
+private:
+    std::unique_ptr<ExpressionHandler> next_;
 };
 }
 

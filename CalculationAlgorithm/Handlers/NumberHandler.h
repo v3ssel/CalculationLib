@@ -6,8 +6,10 @@
 namespace s21 {
 class NumberHandler : public ExpressionHandler {
 public:
-    virtual ExpressionHandler* setNext(ExpressionHandler* handler) = 0;
-    virtual HandleStatus handle(const std::string& expression, size_t& index, std::stack<ExpressionToken>& stack) = 0;
+    HandleStatus handle(const std::string& expression, size_t& index, std::list<ExpressionToken>& stack) override;
+
+private:
+    double getNumber(const std::string& expression, size_t& index, bool& dots_error);
 };
 }
 
