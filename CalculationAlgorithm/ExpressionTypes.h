@@ -4,7 +4,6 @@
 namespace s21 {
 enum class ExpressionTypes {
     NUMBER,
-    X,
     OPEN_BRACKET,
     CLOSED_BRACKET,
     PLUS,

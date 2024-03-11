@@ -1,11 +1,11 @@
-#ifndef _CALCULATIONDATA_H_
-#define _CALCULATIONDATA_H_
+#ifndef _EXPRESSIONTOKEN_H_
+#define _EXPRESSIONTOKEN_H_
 
 #include "ExpressionTypes.h"
 
 namespace s21 {
-struct CalculationData {
-    CalculationData() {
+struct ExpressionToken {
+    ExpressionToken() {
         value = 0;
         priority = 0;
         type = ExpressionTypes::NUMBER;
@@ -24,4 +24,4 @@ struct CalculationData {
 };
 }
 
-#endif  // _CALCULATIONDATA_H_
+#endif  // _EXPRESSIONTOKEN_H_

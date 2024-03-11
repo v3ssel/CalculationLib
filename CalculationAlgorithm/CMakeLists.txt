@@ -8,12 +8,16 @@ set(CMAKE_INCLUDE_CURRENT_DIR ON)
 find_package(GTest REQUIRED)
 
 set(SOURCES 
-    BaseCalculation.cpp
-    BaseCalculation.h
-    CalculationModel.cpp
-    CalculationModel.h
+    BaseCalculationAlgorithm.cpp
+    BaseCalculationAlgorithm.h
+    CalculationAlgorithm.cpp
+    CalculationAlgorithm.h
+    ExpressionPreparator.cpp
+    ExpressionPreparator.h
 
-    CalculationData.h
+    Handlers/ExpressionHandler.h
+
+    ExpressionToken.h
     ExpressionTypes.h
     Utils.cpp
     Utils.h

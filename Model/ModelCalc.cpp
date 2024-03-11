@@ -122,8 +122,10 @@ bool Model::parseExpresssion_(const std::string& exp, const ld& x) {
 
         if (iOfRB < iOfLB && (LBCnt + RBCnt) % 2 == 0 && (LBCnt == RBCnt))
             err_code = false;
+
         if (i == NUMBER_ERR_CODE)
             err_code = false;
+        
         if (!err_code)
             break;
     }
@@ -159,8 +161,13 @@ void Model::getFullNumber_(const std::string& exp, size_t& i, size_t len) {
 }
 
 void Model::basicOps_(const std::string& exp, const size_t& i, bool& err_code, const short&& sign) {
+    if (exp[i + 1] == '\0') {
+        err_code = false;
+        return;
+    }
+
     if (sign < 2) {
-        if (((!expression_.empty() && !(expression_.top().type >= ET::PLUS && expression_.top().type <= ET::POWER)) || !i) && exp[i + 1] != '\0') {
+        if ((!expression_.empty() && !(expression_.top().type >= ET::PLUS && expression_.top().type <= ET::POWER)) || !i) {
             if (!i || exp[i - 1] == '(')
                 expression_.push({ 0, 0, ET::NUMBER });
 
@@ -172,7 +179,7 @@ void Model::basicOps_(const std::string& exp, const size_t& i, bool& err_code, c
             err_code = false;
         }
     } else {
-        if (!expression_.empty() && (!isOperator(expression_.top().type) || expression_.top().type == ET::CLOSED_BRACKET) && exp[i + 1] != '\0') {
+        if (!expression_.empty() && (!isOperator(expression_.top().type) || expression_.top().type == ET::CLOSED_BRACKET)) {
             if (sign == 2)
                 expression_.push({ 0, 2, ET::MULT });
             else
@@ -309,16 +316,16 @@ void Model::shuntingYard_() {
             if (expression_.top().type == ET::CLOSED_BRACKET) {
                 expression_.pop();
                 while (operators.top().type != ET::OPEN_BRACKET) {
-                    output.push({ operators.top().value, operators.top().priority,
-                        operators.top().type });
+                    output.push({ operators.top().value, operators.top().priority, operators.top().type });
                     operators.pop();
                 }
+
                 operators.pop();
                 if (!operators.empty() && operators.top().priority == 4) {
-                    output.push({ operators.top().value, operators.top().priority,
-                        operators.top().type });
+                    output.push({ operators.top().value, operators.top().priority, operators.top().type });
                     operators.pop();
                 }
+
             } else {
                 if (expression_.top().type == ET::NUMBER || expression_.top().type == ET::X) {
                     output.push({ expression_.top().value, expression_.top().priority, expression_.top().type });
@@ -326,8 +333,7 @@ void Model::shuntingYard_() {
                 } else if (expression_.top().type != ET::NUMBER && expression_.top().type != ET::CLOSED_BRACKET) {
                     while (!operators.empty()) {
                         if (expression_.top().priority != -1 && ((expression_.top().priority == 3 && expression_.top().priority < operators.top().priority) || (expression_.top().priority != 3 && expression_.top().priority <= operators.top().priority))) {
-                            output.push({ operators.top().value, operators.top().priority,
-                                operators.top().type });
+                            output.push({ operators.top().value, operators.top().priority, operators.top().type });
                             operators.pop();
                         } else {
                             break;
@@ -342,6 +348,7 @@ void Model::shuntingYard_() {
 
         if (expression_.empty() || check)
             break;
+            
         if (expression_.size() == 1)
             check = true;
     }

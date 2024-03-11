@@ -1,6 +1,6 @@
-#include "BaseCalculation.h"
+#include "BaseCalculationAlgorithm.h"
 
-double BaseCalculation::calculate(const std::string &exp, const std::string &x) {
+double BaseCalculationAlgorithm::calculate(const std::string &exp, const std::string &x) {
     this->expression_ = exp;
     
     this->prepareExpression(x);
@@ -11,6 +11,6 @@ double BaseCalculation::calculate(const std::string &exp, const std::string &x) 
     return this->getResult();
 }
 
-const std::string &BaseCalculation::getExpression() const {
+const std::string &BaseCalculationAlgorithm::getExpression() const {
     return expression_;
 }
