@@ -3,7 +3,7 @@
 namespace s21 {
 HandleStatus NumberHandler::handle(const std::string &expression, size_t &index, std::list<ExpressionToken> &list) {
     if (std::isdigit(expression[index])) {
-        if (index == 0 || ((!list.empty() && list.back().type == ETypes::OPEN_BRACKET) || (list.back().type >= ETypes::PLUS && list.back().type <= ETypes::POWER))) {
+        if (index == 0 || (!list.empty() && (list.back().type == ETypes::OPEN_BRACKET || list.back().is_operator))) {
             bool dots_error = false;
             double num = getNumber(expression, index, dots_error);
 

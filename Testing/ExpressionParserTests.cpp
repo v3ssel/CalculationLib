@@ -373,6 +373,133 @@ TEST(ExpressionParserTests, Functions) {
     EXPECT_EQ(f(vec[18].value, vec[29].value), 1 + 0);
 }
 
+TEST(ExpressionParserTests, Unary) {
+    auto parser = getParser();
+    auto stack = parser.parse("+(-2)");
+    auto vec = stackToVector(stack);
+
+    EXPECT_EQ(vec.size(), 9);
+
+    EXPECT_EQ(vec[0].value,  0);
+    EXPECT_EQ(vec[1].value,  0);
+    EXPECT_EQ(vec[2].value,  0);
+    EXPECT_EQ(vec[3].value,  0);
+    EXPECT_EQ(vec[4].value,  0);
+    EXPECT_EQ(vec[5].value,  2);
+    EXPECT_EQ(vec[6].value,  0);
+    EXPECT_EQ(vec[7].value,  0);
+    EXPECT_EQ(vec[8].value,  0);
+
+    EXPECT_EQ(vec[0].type,  s21::ExpressionTypes::NUMBER);
+    EXPECT_EQ(vec[1].type,  s21::ExpressionTypes::PLUS);
+    EXPECT_EQ(vec[2].type,  s21::ExpressionTypes::OPEN_BRACKET);
+    EXPECT_EQ(vec[3].type,  s21::ExpressionTypes::NUMBER);
+    EXPECT_EQ(vec[4].type,  s21::ExpressionTypes::MINUS);
+    EXPECT_EQ(vec[5].type,  s21::ExpressionTypes::NUMBER);
+    EXPECT_EQ(vec[6].type,  s21::ExpressionTypes::CLOSED_BRACKET);
+    EXPECT_EQ(vec[7].type,  s21::ExpressionTypes::PLUS);
+    EXPECT_EQ(vec[8].type,  s21::ExpressionTypes::NUMBER);
+    
+    EXPECT_EQ(vec[0].priority,  0);
+    EXPECT_EQ(vec[1].priority,  1);
+    EXPECT_EQ(vec[2].priority, -1);
+    EXPECT_EQ(vec[3].priority,  0);
+    EXPECT_EQ(vec[4].priority,  1);
+    EXPECT_EQ(vec[5].priority,  0);
+    EXPECT_EQ(vec[6].priority, -1);
+    EXPECT_EQ(vec[7].priority,  1);
+    EXPECT_EQ(vec[8].priority,  0);
+
+    EXPECT_EQ(vec[0].is_function,  false);
+    EXPECT_EQ(vec[1].is_function,  false);
+    EXPECT_EQ(vec[2].is_function,  false);
+    EXPECT_EQ(vec[3].is_function,  false);
+    EXPECT_EQ(vec[4].is_function,  false);
+    EXPECT_EQ(vec[5].is_function,  false);
+    EXPECT_EQ(vec[6].is_function,  false);
+    EXPECT_EQ(vec[7].is_function,  false);
+    EXPECT_EQ(vec[8].is_function,  false);
+
+    EXPECT_EQ(vec[0].is_operator,  false);
+    EXPECT_EQ(vec[1].is_operator,  true);
+    EXPECT_EQ(vec[2].is_operator,  false);
+    EXPECT_EQ(vec[3].is_operator,  false);
+    EXPECT_EQ(vec[4].is_operator,  true);
+    EXPECT_EQ(vec[5].is_operator,  false);
+    EXPECT_EQ(vec[6].is_operator,  false);
+    EXPECT_EQ(vec[7].is_operator,  true);
+    EXPECT_EQ(vec[8].is_operator,  false);
+}
+
+TEST(ExpressionParserTests, SilenceMultiply) {
+    auto parser = getParser();
+    auto stack = parser.parse("2cos(1)");
+    auto vec = stackToVector(stack);
+
+    // VALUE: 2 TYPE: 0
+    // VALUE: 0 TYPE: 5
+    // VALUE: 0 TYPE: 11
+    // VALUE: 0 TYPE: 1
+    // VALUE: 1 TYPE: 0
+    // VALUE: 0 TYPE: 2
+    // VALUE: 0 TYPE: 3
+    // VALUE: 0 TYPE: 0
+
+    EXPECT_EQ(vec.size(), 8);
+
+    EXPECT_EQ(vec[0].value,  2);
+    EXPECT_EQ(vec[1].value,  0);
+    EXPECT_EQ(vec[2].value,  0);
+    EXPECT_EQ(vec[3].value,  0);
+    EXPECT_EQ(vec[4].value,  1);
+    EXPECT_EQ(vec[5].value,  0);
+    EXPECT_EQ(vec[6].value,  0);
+    EXPECT_EQ(vec[7].value,  0);
+
+    EXPECT_EQ(vec[0].type,  s21::ExpressionTypes::NUMBER);
+    EXPECT_EQ(vec[1].type,  s21::ExpressionTypes::MULT);
+    EXPECT_EQ(vec[2].type,  s21::ExpressionTypes::COS);
+    EXPECT_EQ(vec[3].type,  s21::ExpressionTypes::OPEN_BRACKET);
+    EXPECT_EQ(vec[4].type,  s21::ExpressionTypes::NUMBER);
+    EXPECT_EQ(vec[5].type,  s21::ExpressionTypes::CLOSED_BRACKET);
+    EXPECT_EQ(vec[6].type,  s21::ExpressionTypes::PLUS);
+    EXPECT_EQ(vec[7].type,  s21::ExpressionTypes::NUMBER);
+    
+    EXPECT_EQ(vec[0].priority,  0);
+    EXPECT_EQ(vec[1].priority,  2);
+    EXPECT_EQ(vec[2].priority,  4);
+    EXPECT_EQ(vec[3].priority, -1);
+    EXPECT_EQ(vec[4].priority,  0);
+    EXPECT_EQ(vec[5].priority, -1);
+    EXPECT_EQ(vec[6].priority,  1);
+    EXPECT_EQ(vec[7].priority,  0);
+
+    EXPECT_EQ(vec[0].is_function,  false);
+    EXPECT_EQ(vec[1].is_function,  false);
+    EXPECT_EQ(vec[2].is_function,  true );
+    EXPECT_EQ(vec[3].is_function,  false);
+    EXPECT_EQ(vec[4].is_function,  false);
+    EXPECT_EQ(vec[5].is_function,  false);
+    EXPECT_EQ(vec[6].is_function,  false);
+    EXPECT_EQ(vec[7].is_function,  false);
+
+    EXPECT_EQ(vec[0].is_operator,  false);
+    EXPECT_EQ(vec[1].is_operator,  true);
+    EXPECT_EQ(vec[2].is_operator,  false);
+    EXPECT_EQ(vec[3].is_operator,  false);
+    EXPECT_EQ(vec[4].is_operator,  false);
+    EXPECT_EQ(vec[5].is_operator,  false);
+    EXPECT_EQ(vec[6].is_operator,  true);
+    EXPECT_EQ(vec[7].is_operator,  false);
+}
+
+TEST(ExpressionParserTests, NoErrors) {
+    auto parser = getParser();
+
+    EXPECT_NO_THROW(parser.parse("+2-2"));
+    EXPECT_NO_THROW(parser.parse("+(-2)"));
+}
+
 TEST(ExpressionParserTests, Errors) {
     auto parser = getParser();
 
@@ -396,7 +523,9 @@ TEST(ExpressionParserTests, Errors) {
     EXPECT_THROW(parser.parse("siren"), std::invalid_argument);
     EXPECT_THROW(parser.parse("thanos"), std::invalid_argument);
     EXPECT_THROW(parser.parse("call me"), std::invalid_argument);
-    EXPECT_THROW(parser.parse("lol"), std::invalid_argument);
+    EXPECT_THROW(parser.parse("m"), std::invalid_argument);
+    EXPECT_THROW(parser.parse("s"), std::invalid_argument);
+    EXPECT_THROW(parser.parse("a"), std::invalid_argument);
     EXPECT_THROW(parser.parse("apple"), std::invalid_argument);
     EXPECT_THROW(parser.parse("my man"), std::invalid_argument);
     EXPECT_THROW(parser.parse("xor is ^"), std::invalid_argument);
@@ -405,8 +534,10 @@ TEST(ExpressionParserTests, Errors) {
     EXPECT_THROW(parser.parse("11^/22/^11"), std::invalid_argument);
     EXPECT_THROW(parser.parse("sqrt(15)253"), std::invalid_argument);
     EXPECT_THROW(parser.parse("sqrt()"), std::invalid_argument);
+    EXPECT_THROW(parser.parse("2*mod"), std::invalid_argument);
     EXPECT_THROW(parser.parse("cos+2"), std::invalid_argument);
     EXPECT_THROW(parser.parse("cos2"), std::invalid_argument);
+    EXPECT_THROW(parser.parse("+2-"), std::invalid_argument);
     EXPECT_THROW(parser.parse("2mod+mod2"), std::invalid_argument);
     EXPECT_THROW(parser.parse("3+*5"), std::invalid_argument);
     EXPECT_THROW(parser.parse("sqrt(9)+7+"), std::invalid_argument);

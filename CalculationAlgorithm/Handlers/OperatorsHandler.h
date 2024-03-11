@@ -6,7 +6,10 @@
 namespace s21 {
 class OperatorsHandler : public ExpressionHandler {
 public:
-    HandleStatus handle(const std::string& expression, size_t& index, std::list<ExpressionToken>& stack) override;
+    HandleStatus handle(const std::string& expression, size_t& index, std::list<ExpressionToken>& list) override;
+    
+private:
+    bool IsPreviousOperatorOrFunction(std::list<ExpressionToken>& list);
 };
 }
 

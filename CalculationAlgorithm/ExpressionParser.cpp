@@ -12,8 +12,10 @@ std::stack<ExpressionToken> ExpressionParser::parse(const std::string &expressio
     if (expression.empty())
         throw std::invalid_argument("Expression is empty.");
 
+    std::stack<ExpressionToken> tokens;
     std::list<ExpressionToken> token_list;
     
+    try {
     for (size_t i = 0; i < expression.length(); i++) {
         HandleStatus status = m_handler_->handle(expression, i, token_list);
 
@@ -25,8 +27,6 @@ std::stack<ExpressionToken> ExpressionParser::parse(const std::string &expressio
     token_list.push_back({ 0, 1, ExpressionTypes::PLUS, true, false, reinterpret_cast<void*>(Utils::plus) });
     token_list.push_back({ 0, 0, ExpressionTypes::NUMBER, false, false, nullptr });
 
-    std::stack<ExpressionToken> tokens;
-    
     size_t function_counter = 0, left_brackets = 0, right_brackets = 0;
     for (auto token = token_list.rbegin(); token != token_list.rend(); token++) {
         if (token->type == ExpressionTypes::OPEN_BRACKET)
@@ -46,6 +46,11 @@ std::stack<ExpressionToken> ExpressionParser::parse(const std::string &expressio
     }
     if ((function_counter * 2) > (left_brackets + right_brackets)) {
         throw std::invalid_argument("Invalid expression. Every function must contain open-closed bracket pair.");
+    }
+
+    } catch (...) {
+        m_handler_->clean();
+        throw;
     }
     
     return tokens;

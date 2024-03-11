@@ -6,7 +6,7 @@
 namespace s21 {
 class BracketsHandler : public ExpressionHandler {
 public:
-    HandleStatus handle(const std::string& expression, size_t& index, std::list<ExpressionToken>& stack) override;
+    HandleStatus handle(const std::string& expression, size_t& index, std::list<ExpressionToken>& list) override;
     void clean() override;
 
 private:

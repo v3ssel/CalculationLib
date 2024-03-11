@@ -9,8 +9,8 @@ HandleStatus s21::OperatorsHandler::handle(const std::string &expression, size_t
     }
 
     if (expression[index] == '+' || expression[index] == '-') {
-        if (index == 0 || (!list.empty() && !(list.back().type >= ETypes::PLUS && list.back().type <= ETypes::POWER))) { // need check!!
-            if (index == 0 || expression[index - 1] == '(')
+        if (index == 0 || !IsPreviousOperatorOrFunction(list)) {
+            if (index == 0 || list.back().type == ETypes::OPEN_BRACKET)
                 list.push_back({ 0, 0, ETypes::NUMBER, false, false, nullptr });
 
             if (expression[index] == '-')
@@ -25,7 +25,7 @@ HandleStatus s21::OperatorsHandler::handle(const std::string &expression, size_t
     }
 
     if (expression[index] == '*' || expression[index] == '/') {
-        if (!list.empty() && (!(list.back().type >= ETypes::OPEN_BRACKET && list.back().type <= ETypes::POWER) || list.back().type == ETypes::CLOSED_BRACKET)) { // need check!!
+        if (!IsPreviousOperatorOrFunction(list) && list.back().type != ETypes::OPEN_BRACKET) {
             if (expression[index] == '*')
                 list.push_back({ 0, 2, ETypes::MULT, true, false, reinterpret_cast<void*>(Utils::multiply) });
             else
@@ -39,7 +39,7 @@ HandleStatus s21::OperatorsHandler::handle(const std::string &expression, size_t
     }
 
     if (expression[index] == '^') {
-        if (!list.empty() && (!(list.back().type >= ETypes::OPEN_BRACKET && list.back().type <= ETypes::POWER) || list.back().type == ETypes::CLOSED_BRACKET)) {
+        if (!IsPreviousOperatorOrFunction(list) && list.back().type != ETypes::OPEN_BRACKET) {
             double (*fnc)(double, double) = std::pow;
             list.push_back({ 0, 3, ETypes::POWER, true, false, reinterpret_cast<void*>(fnc) });
         } else {
@@ -50,7 +50,7 @@ HandleStatus s21::OperatorsHandler::handle(const std::string &expression, size_t
     }
 
     if (expression[index] == 'm') {
-        if (expression[index + 1] == 'o' && expression[index + 2] == 'd' && !list.empty()) { // what? why it works?
+        if (expression[index + 1] == 'o' && expression[index + 2] == 'd' && !IsPreviousOperatorOrFunction(list)) {
             double (*fnc)(double, double) = std::fmod;
             list.push_back({ 0, 2, ETypes::MOD, true, false, reinterpret_cast<void*>(fnc) });
         } else {
@@ -62,5 +62,10 @@ HandleStatus s21::OperatorsHandler::handle(const std::string &expression, size_t
     }
 
     return ExpressionHandler::handle(expression, index, list);
+}
+
+// * / ^ mod can only have behind - ) and numbers
+bool OperatorsHandler::IsPreviousOperatorOrFunction(std::list<ExpressionToken> &list) {
+    return !list.empty() && list.back().type >= ETypes::PLUS;
 }
 }
