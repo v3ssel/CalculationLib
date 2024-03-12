@@ -2,6 +2,7 @@
 #define _CALCULATIONALGORITHM_H_
 
 #include <stack>
+#include <memory>
 
 #include "BaseCalculationAlgorithm.h"
 #include "ExpressionToken.h"
@@ -25,9 +26,9 @@ private:
     std::stack<ExpressionToken> m_tokens_;
     double m_last_result_;
 
-    ExpressionPreparator* m_preparator_;
-    ExpressionParser* m_parser_;
-    Calculation* m_calculation_;
+    std::unique_ptr<ExpressionPreparator> m_preparator_;
+    std::unique_ptr<ExpressionParser> m_parser_;
+    std::unique_ptr<Calculation> m_calculation_;
 };
 }
 

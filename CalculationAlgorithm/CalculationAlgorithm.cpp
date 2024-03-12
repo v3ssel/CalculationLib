@@ -8,9 +8,9 @@ namespace s21 {
                                                ExpressionParser* handler,
                                                Calculation* calculation) {
         m_last_result_ = 0;
-        m_preparator_ = preparator;
-        m_parser_ = handler;
-        m_calculation_ = calculation;
+        m_preparator_ = std::unique_ptr<ExpressionPreparator>(preparator);
+        m_parser_ = std::unique_ptr<ExpressionParser>(handler);
+        m_calculation_ = std::unique_ptr<Calculation>(calculation);
     }
 
     void CalculationAlgorithm::prepareExpression(const std::string &x) {

@@ -7,16 +7,25 @@
 #include "../CalculationAlgorithm/Handlers/OperatorsHandler.h"
 #include "../CalculationAlgorithm/Handlers/FunctionsHandler.h"
 
-static s21::ExpressionParser getParser() {
-    s21::ExpressionHandler* handler = new s21::ExpressionHandler();
-    s21::NumberHandler* numberHandler = new s21::NumberHandler();
-    s21::BracketsHandler* bracketsHandler = new s21::BracketsHandler();
-    s21::OperatorsHandler* operatorsHandler = new s21::OperatorsHandler();
-    s21::FunctionsHandler* functionsHandler = new s21::FunctionsHandler();
-    handler->setNext(numberHandler)->setNext(bracketsHandler)->setNext(operatorsHandler)->setNext(functionsHandler);
+class ExpressionParserTest : public ::testing::Test {
+protected:
+	void SetUp() override {
+        s21::ExpressionHandler* handler = new s21::ExpressionHandler();
+        s21::NumberHandler* numberHandler = new s21::NumberHandler();
+        s21::BracketsHandler* bracketsHandler = new s21::BracketsHandler();
+        s21::OperatorsHandler* operatorsHandler = new s21::OperatorsHandler();
+        s21::FunctionsHandler* functionsHandler = new s21::FunctionsHandler();
+        handler->setNext(numberHandler)->setNext(bracketsHandler)->setNext(operatorsHandler)->setNext(functionsHandler);
 
-    return s21::ExpressionParser(handler);
-}
+        m_parser = new s21::ExpressionParser(handler);
+	}
+
+	void TearDown() override {
+        delete m_parser;
+	}
+
+    s21::ExpressionParser* m_parser;
+};
 
 static std::vector<s21::ExpressionToken> stackToVector(std::stack<s21::ExpressionToken>& stack) {
     std::vector<s21::ExpressionToken> result;
@@ -27,9 +36,8 @@ static std::vector<s21::ExpressionToken> stackToVector(std::stack<s21::Expressio
     return result;
 }
 
-TEST(ExpressionParserTests, Plus) {
-    auto parser = getParser();
-    auto stack = parser.parse("2+2");
+TEST_F(ExpressionParserTest, Plus) {
+    auto stack = m_parser->parse("2+2");
     auto vec = stackToVector(stack);
 
     EXPECT_EQ(vec.size(), 5);
@@ -71,9 +79,8 @@ TEST(ExpressionParserTests, Plus) {
     EXPECT_EQ(fnc(vec[2].value, vec[4].value), 2);
 }
 
-TEST(ExpressionParserTests, SimpleOperators) {
-    auto parser = getParser();
-    auto stack = parser.parse("2+3-4*5/6mod7^8");
+TEST_F(ExpressionParserTest, SimpleOperators) {
+    auto stack = m_parser->parse("2+3-4*5/6mod7^8");
     auto vec = stackToVector(stack);
 
     EXPECT_EQ(vec.size(), 15);
@@ -180,9 +187,8 @@ TEST(ExpressionParserTests, SimpleOperators) {
     EXPECT_EQ(fnc(vec[12].value, vec[14].value), 8 + 0);
 }
 
-TEST(ExpressionParserTests, Functions) {
-    auto parser = getParser();
-    auto stack = parser.parse("sqrt(sin(cos(tan(acos(asin(atan(ln(log(1)))))))))");
+TEST_F(ExpressionParserTest, Functions) {
+    auto stack = m_parser->parse("sqrt(sin(cos(tan(acos(asin(atan(ln(log(1)))))))))");
     auto vec = stackToVector(stack);
 
     EXPECT_EQ(vec.size(), 30);
@@ -373,9 +379,8 @@ TEST(ExpressionParserTests, Functions) {
     EXPECT_EQ(f(vec[18].value, vec[29].value), 1 + 0);
 }
 
-TEST(ExpressionParserTests, Unary) {
-    auto parser = getParser();
-    auto stack = parser.parse("+(-2)");
+TEST_F(ExpressionParserTest, Unary) {
+    auto stack = m_parser->parse("+(-2)");
     auto vec = stackToVector(stack);
 
     EXPECT_EQ(vec.size(), 9);
@@ -431,19 +436,9 @@ TEST(ExpressionParserTests, Unary) {
     EXPECT_EQ(vec[8].is_operator,  false);
 }
 
-TEST(ExpressionParserTests, SilenceMultiply) {
-    auto parser = getParser();
-    auto stack = parser.parse("2cos(1)");
+TEST_F(ExpressionParserTest, SilenceMultiply) {
+    auto stack = m_parser->parse("2cos(1)");
     auto vec = stackToVector(stack);
-
-    // VALUE: 2 TYPE: 0
-    // VALUE: 0 TYPE: 5
-    // VALUE: 0 TYPE: 11
-    // VALUE: 0 TYPE: 1
-    // VALUE: 1 TYPE: 0
-    // VALUE: 0 TYPE: 2
-    // VALUE: 0 TYPE: 3
-    // VALUE: 0 TYPE: 0
 
     EXPECT_EQ(vec.size(), 8);
 
@@ -493,67 +488,64 @@ TEST(ExpressionParserTests, SilenceMultiply) {
     EXPECT_EQ(vec[7].is_operator,  false);
 }
 
-TEST(ExpressionParserTests, NoErrors) {
-    auto parser = getParser();
-
-    EXPECT_NO_THROW(parser.parse("+2-2"));
-    EXPECT_NO_THROW(parser.parse("+(-2)"));
+TEST_F(ExpressionParserTest, NoErrors) {
+    EXPECT_NO_THROW(m_parser->parse("+2-2"));
+    EXPECT_NO_THROW(m_parser->parse("+(-2)"));
 }
 
-TEST(ExpressionParserTests, Errors) {
-    auto parser = getParser();
+TEST_F(ExpressionParserTest, Errors) {
 
-    EXPECT_THROW(parser.parse("()sqrt(()))"), std::invalid_argument);
-    EXPECT_THROW(parser.parse("sqrt2"), std::invalid_argument);
-    EXPECT_THROW(parser.parse("sin"), std::invalid_argument);
-    EXPECT_THROW(parser.parse("(3-1)())("), std::invalid_argument);
-    EXPECT_THROW(parser.parse("            "), std::invalid_argument);
-    EXPECT_THROW(parser.parse(""), std::invalid_argument);
-    EXPECT_THROW(parser.parse("tantan"), std::invalid_argument);
-    EXPECT_THROW(parser.parse("ln(log)"), std::invalid_argument);
-    EXPECT_THROW(parser.parse("atak"), std::invalid_argument);
-    EXPECT_THROW(parser.parse("acot"), std::invalid_argument);
-    EXPECT_THROW(parser.parse("seen"), std::invalid_argument);
-    EXPECT_THROW(parser.parse("2---+233"), std::invalid_argument);
-    EXPECT_THROW(parser.parse("sin(1) * cos)("), std::invalid_argument);
-    EXPECT_THROW(parser.parse("__trash/"), std::invalid_argument);
-    EXPECT_THROW(parser.parse("2--2**12*//4mod*31"), std::invalid_argument);
-    EXPECT_THROW(parser.parse("2-2)"), std::invalid_argument);
-    EXPECT_THROW(parser.parse("2...5132 - 1.24.12"), std::invalid_argument);
-    EXPECT_THROW(parser.parse("siren"), std::invalid_argument);
-    EXPECT_THROW(parser.parse("thanos"), std::invalid_argument);
-    EXPECT_THROW(parser.parse("call me"), std::invalid_argument);
-    EXPECT_THROW(parser.parse("m"), std::invalid_argument);
-    EXPECT_THROW(parser.parse("s"), std::invalid_argument);
-    EXPECT_THROW(parser.parse("a"), std::invalid_argument);
-    EXPECT_THROW(parser.parse("apple"), std::invalid_argument);
-    EXPECT_THROW(parser.parse("my man"), std::invalid_argument);
-    EXPECT_THROW(parser.parse("xor is ^"), std::invalid_argument);
-    EXPECT_THROW(parser.parse("2*^3"), std::invalid_argument);
-    EXPECT_THROW(parser.parse("33^mod^33"), std::invalid_argument);
-    EXPECT_THROW(parser.parse("11^/22/^11"), std::invalid_argument);
-    EXPECT_THROW(parser.parse("sqrt(15)253"), std::invalid_argument);
-    EXPECT_THROW(parser.parse("sqrt()"), std::invalid_argument);
-    EXPECT_THROW(parser.parse("2*mod"), std::invalid_argument);
-    EXPECT_THROW(parser.parse("cos+2"), std::invalid_argument);
-    EXPECT_THROW(parser.parse("cos2"), std::invalid_argument);
-    EXPECT_THROW(parser.parse("+2-"), std::invalid_argument);
-    EXPECT_THROW(parser.parse("2mod+mod2"), std::invalid_argument);
-    EXPECT_THROW(parser.parse("3+*5"), std::invalid_argument);
-    EXPECT_THROW(parser.parse("sqrt(9)+7+"), std::invalid_argument);
-    EXPECT_THROW(parser.parse("sin(45))"), std::invalid_argument);
-    EXPECT_THROW(parser.parse("(4/2"), std::invalid_argument);
-    EXPECT_THROW(parser.parse("log(10, 100))"), std::invalid_argument);
-    EXPECT_THROW(parser.parse("3sin+sin3"), std::invalid_argument);
-    EXPECT_THROW(parser.parse("log"), std::invalid_argument);
-    EXPECT_THROW(parser.parse("sqrt+sqrt"), std::invalid_argument);
-    EXPECT_THROW(parser.parse("tan()"), std::invalid_argument);
-    EXPECT_THROW(parser.parse("log(10"), std::invalid_argument);
-    EXPECT_THROW(parser.parse("1+2+3+"), std::invalid_argument);
-    EXPECT_THROW(parser.parse("3+*5"), std::invalid_argument);
-    EXPECT_THROW(parser.parse("(4+7)/"), std::invalid_argument);
-    EXPECT_THROW(parser.parse("2*(6-3))"), std::invalid_argument);
-    EXPECT_THROW(parser.parse("((8*2)-6/3) +"), std::invalid_argument);
-    EXPECT_THROW(parser.parse("3^2+"), std::invalid_argument);
-    EXPECT_THROW(parser.parse("--++3^-^2+"), std::invalid_argument);
+    EXPECT_THROW(m_parser->parse("()sqrt(()))"), std::invalid_argument);
+    EXPECT_THROW(m_parser->parse("sqrt2"), std::invalid_argument);
+    EXPECT_THROW(m_parser->parse("sin"), std::invalid_argument);
+    EXPECT_THROW(m_parser->parse("(3-1)())("), std::invalid_argument);
+    EXPECT_THROW(m_parser->parse("            "), std::invalid_argument);
+    EXPECT_THROW(m_parser->parse(""), std::invalid_argument);
+    EXPECT_THROW(m_parser->parse("tantan"), std::invalid_argument);
+    EXPECT_THROW(m_parser->parse("ln(log)"), std::invalid_argument);
+    EXPECT_THROW(m_parser->parse("atak"), std::invalid_argument);
+    EXPECT_THROW(m_parser->parse("acot"), std::invalid_argument);
+    EXPECT_THROW(m_parser->parse("seen"), std::invalid_argument);
+    EXPECT_THROW(m_parser->parse("2---+233"), std::invalid_argument);
+    EXPECT_THROW(m_parser->parse("sin(1) * cos)("), std::invalid_argument);
+    EXPECT_THROW(m_parser->parse("__trash/"), std::invalid_argument);
+    EXPECT_THROW(m_parser->parse("2--2**12*//4mod*31"), std::invalid_argument);
+    EXPECT_THROW(m_parser->parse("2-2)"), std::invalid_argument);
+    EXPECT_THROW(m_parser->parse("2...5132 - 1.24.12"), std::invalid_argument);
+    EXPECT_THROW(m_parser->parse("siren"), std::invalid_argument);
+    EXPECT_THROW(m_parser->parse("thanos"), std::invalid_argument);
+    EXPECT_THROW(m_parser->parse("call me"), std::invalid_argument);
+    EXPECT_THROW(m_parser->parse("m"), std::invalid_argument);
+    EXPECT_THROW(m_parser->parse("s"), std::invalid_argument);
+    EXPECT_THROW(m_parser->parse("a"), std::invalid_argument);
+    EXPECT_THROW(m_parser->parse("apple"), std::invalid_argument);
+    EXPECT_THROW(m_parser->parse("my man"), std::invalid_argument);
+    EXPECT_THROW(m_parser->parse("xor is ^"), std::invalid_argument);
+    EXPECT_THROW(m_parser->parse("2*^3"), std::invalid_argument);
+    EXPECT_THROW(m_parser->parse("33^mod^33"), std::invalid_argument);
+    EXPECT_THROW(m_parser->parse("11^/22/^11"), std::invalid_argument);
+    EXPECT_THROW(m_parser->parse("sqrt(15)253"), std::invalid_argument);
+    EXPECT_THROW(m_parser->parse("sqrt()"), std::invalid_argument);
+    EXPECT_THROW(m_parser->parse("2*mod"), std::invalid_argument);
+    EXPECT_THROW(m_parser->parse("cos+2"), std::invalid_argument);
+    EXPECT_THROW(m_parser->parse("cos2"), std::invalid_argument);
+    EXPECT_THROW(m_parser->parse("+2-"), std::invalid_argument);
+    EXPECT_THROW(m_parser->parse("2mod+mod2"), std::invalid_argument);
+    EXPECT_THROW(m_parser->parse("3+*5"), std::invalid_argument);
+    EXPECT_THROW(m_parser->parse("sqrt(9)+7+"), std::invalid_argument);
+    EXPECT_THROW(m_parser->parse("sin(45))"), std::invalid_argument);
+    EXPECT_THROW(m_parser->parse("(4/2"), std::invalid_argument);
+    EXPECT_THROW(m_parser->parse("log(10, 100))"), std::invalid_argument);
+    EXPECT_THROW(m_parser->parse("3sin+sin3"), std::invalid_argument);
+    EXPECT_THROW(m_parser->parse("log"), std::invalid_argument);
+    EXPECT_THROW(m_parser->parse("sqrt+sqrt"), std::invalid_argument);
+    EXPECT_THROW(m_parser->parse("tan()"), std::invalid_argument);
+    EXPECT_THROW(m_parser->parse("log(10"), std::invalid_argument);
+    EXPECT_THROW(m_parser->parse("1+2+3+"), std::invalid_argument);
+    EXPECT_THROW(m_parser->parse("3+*5"), std::invalid_argument);
+    EXPECT_THROW(m_parser->parse("(4+7)/"), std::invalid_argument);
+    EXPECT_THROW(m_parser->parse("2*(6-3))"), std::invalid_argument);
+    EXPECT_THROW(m_parser->parse("((8*2)-6/3) +"), std::invalid_argument);
+    EXPECT_THROW(m_parser->parse("3^2+"), std::invalid_argument);
+    EXPECT_THROW(m_parser->parse("--++3^-^2+"), std::invalid_argument);
 }

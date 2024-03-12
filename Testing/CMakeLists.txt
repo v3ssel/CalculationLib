@@ -13,6 +13,7 @@ set(SOURCES
     main_test.cpp
     ExpressionPreparatorTests.cpp
     ExpressionParserTests.cpp
+    CalculationAlgorithmTests.cpp
 )
 
 add_executable(${PROJECT_NAME} ${SOURCES})
