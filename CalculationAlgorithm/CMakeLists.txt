@@ -15,6 +15,8 @@ set(SOURCES
     ExpressionPreparator.h
     ExpressionParser.cpp
     ExpressionParser.h
+    Calculation.cpp
+    Calculation.h
 
     Handlers/ExpressionHandler.cpp
     Handlers/ExpressionHandler.h

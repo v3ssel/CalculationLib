@@ -24,17 +24,11 @@ double Model::entryPoint(std::string& exp, const ld& x) {
 }
 
 void Model::stackReverse_() {
-    bool check = false;
     std::stack<Data> reversed;
 
-    while (1) {
-        reversed.push({ expression_.top().value, expression_.top().priority,
-            expression_.top().type });
+    while (!expression_.empty()) {
+        reversed.push(expression_.top());
         expression_.pop();
-        if (check)
-            break;
-        if (expression_.size() == 1)
-            check = true;
     }
 
     expression_ = std::move(reversed);
@@ -307,76 +301,58 @@ void Model::lastChecker_(size_t& LBCnt, size_t& RBCnt, size_t& func_cnt, bool& e
 }
 
 void Model::shuntingYard_() {
-    bool check = false;
     std::stack<Data> operators;
     std::stack<Data> output;
 
-    while (1) {
-        if (!expression_.empty()) {
-            if (expression_.top().type == ET::CLOSED_BRACKET) {
-                expression_.pop();
-                while (operators.top().type != ET::OPEN_BRACKET) {
-                    output.push({ operators.top().value, operators.top().priority, operators.top().type });
-                    operators.pop();
-                }
-
+    while (!expression_.empty()) {
+        if (expression_.top().type == ET::CLOSED_BRACKET) {
+            expression_.pop();
+            while (operators.top().type != ET::OPEN_BRACKET) {
+                output.push(operators.top());
                 operators.pop();
-                if (!operators.empty() && operators.top().priority == 4) {
-                    output.push({ operators.top().value, operators.top().priority, operators.top().type });
+            }
+
+            operators.pop();
+            if (!operators.empty() && operators.top().priority == 4) {
+                output.push(operators.top());
+                operators.pop();
+            }
+
+        } else if (expression_.top().type == ET::NUMBER || expression_.top().type == ET::X) {
+            output.push(expression_.top());
+            expression_.pop();
+
+        } else if (expression_.top().type != ET::NUMBER && expression_.top().type != ET::CLOSED_BRACKET) {
+            while (!operators.empty()) {
+                if (expression_.top().priority != -1 &&
+                    ((expression_.top().priority == 3 && expression_.top().priority < operators.top().priority) || 
+                     (expression_.top().priority != 3 && expression_.top().priority <= operators.top().priority))) {
+                        
+                    output.push(operators.top());
                     operators.pop();
-                }
-
-            } else {
-                if (expression_.top().type == ET::NUMBER || expression_.top().type == ET::X) {
-                    output.push({ expression_.top().value, expression_.top().priority, expression_.top().type });
-                    expression_.pop();
-                } else if (expression_.top().type != ET::NUMBER && expression_.top().type != ET::CLOSED_BRACKET) {
-                    while (!operators.empty()) {
-                        if (expression_.top().priority != -1 && ((expression_.top().priority == 3 && expression_.top().priority < operators.top().priority) || (expression_.top().priority != 3 && expression_.top().priority <= operators.top().priority))) {
-                            output.push({ operators.top().value, operators.top().priority, operators.top().type });
-                            operators.pop();
-                        } else {
-                            break;
-                        }
-                    }
-
-                    operators.push({ expression_.top().value, expression_.top().priority, expression_.top().type });
-                    expression_.pop();
+                } else {
+                    break;
                 }
             }
+
+            operators.push(expression_.top());
+            expression_.pop();
         }
-
-        if (expression_.empty() || check)
-            break;
-
-        if (expression_.size() == 1)
-            check = true;
     }
 
-    if (!operators.empty()) {
-        check = false;
-    
-        while (1) {
-            output.push({ operators.top().value, operators.top().priority, operators.top().type });
-            operators.pop();
-
-            if (operators.empty() || check)
-                break;
-            
-            if (operators.size() == 1)
-                check = true;
-        }
+    while (!operators.empty()) {
+        output.push(operators.top());
+        operators.pop();
     }
 
     expression_ = std::move(output);
 }
 
 void Model::calcus_() {
-    bool check = false;
     ld val1 = 0., val2 = 0.;
     std::stack<Data> calculated;
 
-    while (1) {
+    while (!expression_.empty()) {
         switch (expression_.top().type) {
         case ET::PLUS:
             expression_.pop();
@@ -466,16 +442,10 @@ void Model::calcus_() {
             break;
         }
 
-        if (!expression_.empty() && (expression_.top().type == ET::NUMBER || expression_.top().type == ET::X)) {
-            calculated.push({ expression_.top().value, expression_.top().priority, expression_.top().type });
+        if (expression_.top().type == ET::NUMBER || expression_.top().type == ET::X) {
+            calculated.push(expression_.top());
             expression_.pop();
         }
-        
-        if (expression_.empty() || check)
-            break;
-        
-        if (expression_.size() == 1)
-            check = true;
     }
 
     expression_ = std::move(calculated);

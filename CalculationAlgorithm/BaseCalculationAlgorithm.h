@@ -11,7 +11,6 @@ public:
 // protected:
     virtual void prepareExpression(const std::string& x) = 0;
     virtual void parseExpression() = 0;
-    virtual void shuntingYard() = 0;
     virtual void calculation() = 0;
     virtual double getResult() = 0;
 

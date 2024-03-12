@@ -16,13 +16,17 @@ tests:
 	cmake --build .
 	
 bee:
-	g++ -g main.cpp CalculationAlgorithm\ExpressionParser.cpp \
-				 CalculationAlgorithm\Handlers\ExpressionHandler.cpp \
-				 CalculationAlgorithm\Handlers\NumberHandler.cpp \
-				 CalculationAlgorithm\Handlers\BracketsHandler.cpp \
-				 CalculationAlgorithm\Handlers\OperatorsHandler.cpp \
-				 CalculationAlgorithm\Handlers\FunctionsHandler.cpp \
-				 CalculationAlgorithm\Utils.cpp
+	g++ -g main.cpp  CalculationAlgorithm/BaseCalculationAlgorithm.cpp \
+					 CalculationAlgorithm/CalculationAlgorithm.cpp \
+					 CalculationAlgorithm/ExpressionPreparator.cpp \
+					 CalculationAlgorithm/ExpressionParser.cpp \
+					 CalculationAlgorithm/Calculation.cpp \
+					 CalculationAlgorithm/Handlers/ExpressionHandler.cpp \
+					 CalculationAlgorithm/Handlers/NumberHandler.cpp \
+					 CalculationAlgorithm/Handlers/BracketsHandler.cpp \
+					 CalculationAlgorithm/Handlers/OperatorsHandler.cpp \
+					 CalculationAlgorithm/Handlers/FunctionsHandler.cpp \
+					 CalculationAlgorithm/Utils.cpp
 
 clean:
 	rm -rf build

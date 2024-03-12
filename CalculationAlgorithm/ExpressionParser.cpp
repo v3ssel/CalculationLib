@@ -53,6 +53,7 @@ std::stack<ExpressionToken> ExpressionParser::parse(const std::string &expressio
         throw;
     }
     
+    m_handler_->clean();
     return tokens;
 }
 }

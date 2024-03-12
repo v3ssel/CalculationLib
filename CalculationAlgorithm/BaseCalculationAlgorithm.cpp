@@ -5,7 +5,6 @@ double BaseCalculationAlgorithm::calculate(const std::string &exp, const std::st
     
     this->prepareExpression(x);
     this->parseExpression();
-    this->shuntingYard();
     this->calculation();
 
     return this->getResult();
