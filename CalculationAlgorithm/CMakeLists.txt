@@ -11,6 +11,8 @@ set(SOURCES
     BaseCalculationAlgorithm.h
     CalculationAlgorithm.cpp
     CalculationAlgorithm.h
+    CalculationAlgorithmWithXWrapper.cpp
+    CalculationAlgorithmWithXWrapper.h
     ExpressionPreparator.cpp
     ExpressionPreparator.h
     ExpressionParser.cpp

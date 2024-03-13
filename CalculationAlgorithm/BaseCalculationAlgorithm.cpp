@@ -1,10 +1,9 @@
 #include "BaseCalculationAlgorithm.h"
 
 namespace s21 {
-double BaseCalculationAlgorithm::calculate(const std::string &exp, const std::string &x) {
+double BaseCalculationAlgorithm::calculate(const std::string &exp) {
     this->expression_ = exp;
     
-    this->prepareExpression(x);
     this->parseExpression();
     this->calculation();
 

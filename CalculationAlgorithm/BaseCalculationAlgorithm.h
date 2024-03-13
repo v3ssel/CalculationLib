@@ -6,11 +6,10 @@
 namespace s21 {
 class BaseCalculationAlgorithm {
 public:
-    double calculate(const std::string& exp, const std::string& x = "");
+    double calculate(const std::string& exp);
     const std::string& getExpression() const;
 
 protected:
-    virtual void prepareExpression(const std::string& x) = 0;
     virtual void parseExpression() = 0;
     virtual void calculation() = 0;
     virtual double getResult() = 0;
