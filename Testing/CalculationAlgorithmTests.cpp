@@ -59,10 +59,14 @@ TEST_F(CalculationAlgorithmTest, SumFunc) {
     EXPECT_DOUBLE_EQ(expected, actual);
 }
 
-// TEST_F(CalculationAlgorithmTest, MultByBracket) {
-//     std::string exp = "2cos(1) + 3sin(2) - 4tan(1) + 2acos(0.32) - 3asin(0.2) + 4atan(2) - 4ln(10) + 7log(99) / 4x";
+TEST_F(CalculationAlgorithmTest, MultByBracket) {
+    std::string exp = "2cos(1) + 3sin(2) - 4tan(1) + 2acos(0.32) - 3asin(0.2) + 4atan(2) - 4ln(10) + 7log(99) / 4 * 10";
 
-// }
+    double expected = 29.606796314880558;
+    double actual = m_algorithm->calculate(exp);
+
+    EXPECT_DOUBLE_EQ(expected, actual);
+}
 
 TEST_F(CalculationAlgorithmTest, Long) {
     std::string exp = "15/(7-(1+1))*3-(2+(1+1))*15/(7-(200+1))*3-(2+(1+1))*(15/"
@@ -103,5 +107,5 @@ TEST_F(CalculationAlgorithmTest, Mod) {
 
 // TEST_F(CalculationAlgorithmTest, X) {
 //     std::string exp = "2x(2x+1) + 4";
-
+//     x = 3.15, ans = 49.989999999999995
 // }

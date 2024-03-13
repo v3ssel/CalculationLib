@@ -1,6 +1,6 @@
 #include <gtest/gtest.h>
 
-#include "Model/Model.h"
+#include "Model.h"
 
 s21::Model model;
 

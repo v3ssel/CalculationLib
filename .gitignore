@@ -1,6 +1,11 @@
 *build*
 .vscode
+.DS_Store
 
 *.exe
 *.out
 main.cpp
+
+*.a
+*.dll
+*.dylib

@@ -442,7 +442,7 @@ void Model::calcus_() {
             break;
         }
 
-        if (expression_.top().type == ET::NUMBER || expression_.top().type == ET::X) {
+        if (!expression_.empty() && (expression_.top().type == ET::NUMBER || expression_.top().type == ET::X)) {
             calculated.push(expression_.top());
             expression_.pop();
         }
