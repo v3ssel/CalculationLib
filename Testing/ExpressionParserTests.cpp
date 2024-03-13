@@ -33,6 +33,7 @@ static std::vector<s21::ExpressionToken> stackToVector(std::stack<s21::Expressio
         result.push_back(stack.top());
         stack.pop();
     }
+    
     return result;
 }
 
@@ -40,7 +41,7 @@ TEST_F(ExpressionParserTest, Plus) {
     auto stack = m_parser->parse("2+2");
     auto vec = stackToVector(stack);
 
-    EXPECT_EQ(vec.size(), 5);
+    ASSERT_EQ(vec.size(), 5);
 
     EXPECT_EQ(vec[0].value, 2);
     EXPECT_EQ(vec[1].value, 0);
@@ -83,7 +84,7 @@ TEST_F(ExpressionParserTest, SimpleOperators) {
     auto stack = m_parser->parse("2+3-4*5/6mod7^8");
     auto vec = stackToVector(stack);
 
-    EXPECT_EQ(vec.size(), 15);
+    ASSERT_EQ(vec.size(), 15);
 
     EXPECT_EQ(vec[0].value,  2);
     EXPECT_EQ(vec[1].value,  0);
@@ -191,7 +192,7 @@ TEST_F(ExpressionParserTest, Functions) {
     auto stack = m_parser->parse("sqrt(sin(cos(tan(acos(asin(atan(ln(log(1)))))))))");
     auto vec = stackToVector(stack);
 
-    EXPECT_EQ(vec.size(), 30);
+    ASSERT_EQ(vec.size(), 30);
 
     EXPECT_EQ(vec[0].value,  0);
     EXPECT_EQ(vec[1].value,  0);
@@ -383,7 +384,7 @@ TEST_F(ExpressionParserTest, Unary) {
     auto stack = m_parser->parse("+(-2)");
     auto vec = stackToVector(stack);
 
-    EXPECT_EQ(vec.size(), 9);
+    ASSERT_EQ(vec.size(), 9);
 
     EXPECT_EQ(vec[0].value,  0);
     EXPECT_EQ(vec[1].value,  0);
@@ -440,7 +441,7 @@ TEST_F(ExpressionParserTest, SilenceMultiply) {
     auto stack = m_parser->parse("2cos(1)");
     auto vec = stackToVector(stack);
 
-    EXPECT_EQ(vec.size(), 8);
+    ASSERT_EQ(vec.size(), 8);
 
     EXPECT_EQ(vec[0].value,  2);
     EXPECT_EQ(vec[1].value,  0);

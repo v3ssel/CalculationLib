@@ -7,12 +7,11 @@ set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
 find_package(GTest REQUIRED)
 
-# add_subdirectory(../CalculationAlgorithm CalculationAlgorithm)
-
 set(SOURCES 
     main_test.cpp
     ExpressionPreparatorTests.cpp
     ExpressionParserTests.cpp
+    ShuntingYardTests.cpp
     CalculationAlgorithmTests.cpp
 )
 
