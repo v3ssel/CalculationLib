@@ -37,7 +37,7 @@ protected:
 };
 
 TEST_F(CalculationAlgorithmWithXWrapperTest, SilentMultiplyWithX) {
-    std::string exp = "2x(2x+1) + 4";
+    std::string exp = "2x(2x + 1) + 4";
     
     double expected = 49.989999999999995;
     double actual = m_xalgorithm->calculate(exp, "3.15");
