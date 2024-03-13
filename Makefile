@@ -1,4 +1,4 @@
-
+.PHONY: tests
 all: tests old bee
 
 old:

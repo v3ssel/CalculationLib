@@ -44,3 +44,39 @@ TEST_F(CalculationAlgorithmWithXWrapperTest, SilentMultiplyWithX) {
 
     EXPECT_DOUBLE_EQ(expected, actual);
 }
+
+TEST_F(CalculationAlgorithmWithXWrapperTest, SquaredXPoweredE) {
+    std::string exp = "(x ^ x) ^ (1e-2)";
+
+    double expected = 1.0570180405613804;
+    double actual = m_xalgorithm->calculate(exp, "4");
+
+    EXPECT_DOUBLE_EQ(expected, actual);
+}
+
+TEST_F(CalculationAlgorithmWithXWrapperTest, Functions) {
+    std::string exp = "x sin(x) + cos(x^2)";
+
+    double expected = 1.3264833062061126;
+    double actual = m_xalgorithm->calculate(exp, "1.11");
+
+    EXPECT_DOUBLE_EQ(expected, actual);
+}
+
+TEST_F(CalculationAlgorithmWithXWrapperTest, XandE) {
+    std::string exp = "x*2e3";
+
+    double expected = 8000;
+    double actual = m_xalgorithm->calculate(exp, "4");
+
+    EXPECT_DOUBLE_EQ(expected, actual);
+}
+
+TEST_F(CalculationAlgorithmWithXWrapperTest, Modulus) {
+    std::string exp = "8 mod x";
+
+    double expected = 2;
+    double actual = m_xalgorithm->calculate(exp, "3");
+
+    EXPECT_DOUBLE_EQ(expected, actual);
+}
