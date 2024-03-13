@@ -6,5 +6,5 @@ set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR})
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR})
 
 add_subdirectory(CalculationAlgorithm)
-add_subdirectory(Testing)
+add_subdirectory(Tests)
 add_subdirectory(Model)
