@@ -3,6 +3,7 @@
 #include "../CalculationAlgorithm/BaseCalculationAlgorithm.h"
 #include "../CalculationAlgorithm/CalculationAlgorithm.h"
 
+#include "../CalculationAlgorithm/ExpressionPreparator.h"
 #include "../CalculationAlgorithm/Handlers/NumberHandler.h"
 #include "../CalculationAlgorithm/Handlers/BracketsHandler.h"
 #include "../CalculationAlgorithm/Handlers/OperatorsHandler.h"
@@ -22,7 +23,7 @@ protected:
         s21::ExpressionParser* parser = new s21::ExpressionParser(handler);
         s21::Calculation* calculation = new s21::Calculation();
 
-        m_algorithm = new s21::CalculationAlgorithm(preparator, parser, calculation);
+        m_algorithm = new s21::CalculationAlgorithm(parser, calculation);
 	}
 
 	void TearDown() override {
@@ -60,7 +61,7 @@ TEST_F(CalculationAlgorithmTest, SumFunc) {
 }
 
 TEST_F(CalculationAlgorithmTest, MultByBracket) {
-    std::string exp = "2cos(1) + 3sin(2) - 4tan(1) + 2acos(0.32) - 3asin(0.2) + 4atan(2) - 4ln(10) + 7log(99) / 4 * 10";
+    std::string exp = "2cos(1)+3sin(2)-4tan(1)+2acos(0.32)-3asin(0.2)+4atan(2)-4ln(10)+7log(99)/4*10";
 
     double expected = 29.606796314880558;
     double actual = m_algorithm->calculate(exp);
@@ -88,7 +89,7 @@ TEST_F(CalculationAlgorithmTest, Functions) {
 }
 
 TEST_F(CalculationAlgorithmTest, Power) {
-    std::string exp = "2^2^3 * 4";
+    std::string exp = "2^2^3*4";
 
     double expected = 1024;
     double actual = m_algorithm->calculate(exp);
@@ -97,15 +98,10 @@ TEST_F(CalculationAlgorithmTest, Power) {
 }
 
 TEST_F(CalculationAlgorithmTest, Mod) {
-    std::string exp = "((2 * 5437 mod 521 * 224 mod (3 + 2)) * 2000 / 500) mod 3";
+    std::string exp = "((2*5437mod521*224mod(3+2))*2000/500)mod3";
 
     double expected = 1;
     double actual = m_algorithm->calculate(exp);
 
     EXPECT_DOUBLE_EQ(expected, actual);
 }
-
-// TEST_F(CalculationAlgorithmTest, X) {
-//     std::string exp = "2x(2x+1) + 4";
-//     x = 3.15, ans = 49.989999999999995
-// }

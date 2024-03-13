@@ -13,6 +13,7 @@ set(SOURCES
     ExpressionParserTests.cpp
     ShuntingYardTests.cpp
     CalculationAlgorithmTests.cpp
+    CalculationAlgorithmWithXWrapperTests.cpp
 )
 
 add_executable(${PROJECT_NAME} ${SOURCES})
