@@ -1,31 +1,29 @@
+BUILDDIR=build
+
 .PHONY: tests
 all: tests old bee
 
 old:
-	mkdir -p build && cd build && \
-	cmake .. -G "Unix Makefiles" && \
-	cmake --build . --target CalculationAlgorithmOld
+	cmake .. -G "Unix Makefiles" -B $(BUILDDIR) && \
+	cmake --build $(BUILDDIR) --target CalculationAlgorithmOld
 
 style:
 	clang-format -i --verbose --style=Webkit *.cpp Model/*.cpp Model/*.h
 
 lib:
-	mkdir -p build && cd build && \
-	cmake .. -G "Unix Makefiles" && \
-	cmake --build . --target CalculationLib
+	cmake . -G "Unix Makefiles" -B $(BUILDDIR) && \
+	cmake --build $(BUILDDIR) --target CalculationLib --config Release
 
 
 tests:
-	mkdir -p build && cd build && \
-	cmake .. -G "Unix Makefiles" && \
-	cmake --build . --target CalculationAlgorithmTests
+	cmake .. -G "Unix Makefiles" -B $(BUILDDIR) && \
+	cmake --build $(BUILDDIR) --target CalculationAlgorithmTests --config RelWithDebInfo
 	
 bee:
-	mkdir -p build && cd build && \
-	cmake .. -G "Unix Makefiles" && \
-	cmake --build . --target CalculationAlgorithm
+	cmake .. -G "Unix Makefiles" -B $(BUILDDIR) && \
+	cmake --build $(BUILDDIR) --target CalculationAlgorithm
 
 	g++ -g main.cpp libCalculationAlgorithm.a 
 
 clean:
-	rm -rf build
+	rm -rf $(BUILDDIR)
