@@ -9,6 +9,11 @@ old:
 style:
 	clang-format -i --verbose --style=Webkit *.cpp Model/*.cpp Model/*.h
 
+lib:
+	mkdir -p build && cd build && \
+	cmake .. -G "Unix Makefiles" && \
+	cmake --build . --target CalculationLib
+
 
 tests:
 	mkdir -p build && cd build && \
