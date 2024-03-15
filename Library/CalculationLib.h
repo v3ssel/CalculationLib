@@ -9,7 +9,7 @@ namespace s21 {
         static CalculationLib& Instance();
 
         double calculate(std::string expression, std::string x);
-        std::vector<double> calculate_range(int start, int end, std::string expression);
+        std::vector<double> calculateRange(int start, int end, std::string expression);
     
     private:
         CalculationLib();
