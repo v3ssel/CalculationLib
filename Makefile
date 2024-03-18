@@ -4,7 +4,7 @@ BUILDDIR=build
 all: tests old bee
 
 old:
-	cmake .. -G "Unix Makefiles" -B $(BUILDDIR) && \
+	cmake . -G "Unix Makefiles" -B $(BUILDDIR) && \
 	cmake --build $(BUILDDIR) --target CalculationAlgorithmOld
 
 style:
@@ -21,11 +21,11 @@ credit_lib:
 
 
 tests:
-	cmake .. -G "Unix Makefiles" -B $(BUILDDIR) && \
+	cmake . -G "Unix Makefiles" -B $(BUILDDIR) && \
 	cmake --build $(BUILDDIR) --target CalculationAlgorithmTests --config RelWithDebInfo
 	
 bee:
-	cmake .. -G "Unix Makefiles" -B $(BUILDDIR) && \
+	cmake . -G "Unix Makefiles" -B $(BUILDDIR) && \
 	cmake --build $(BUILDDIR) --target CalculationAlgorithm
 
 	g++ -g main.cpp libCalculationAlgorithm.a 

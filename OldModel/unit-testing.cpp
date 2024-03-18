@@ -198,32 +198,32 @@ TEST(Calculator, InvalidTest3)
     
 }
 
-// TEST(Credit, Annuity) {
-//   long double sum = 1500000;
-//   int64_t term = 33;
-//   double percent = 22.3, payment[term], overpay[term], fullsum[term];
-//   bool type = true;
-//   model.startCalculationCredit(sum, term, percent, type, payment, overpay,
-//                                     fullsum);
+TEST(Credit, Annuity) {
+  long double sum = 1500000;
+  int64_t term = 33;
+  double percent = 22.3, payment[term], overpay[term], fullsum[term];
+  bool type = true;
+  model.calcMonthly(sum, term, percent, type, payment, overpay,
+                                    fullsum);
 
-//   EXPECT_FLOAT_EQ(payment[0], 61215.94);
-//   EXPECT_FLOAT_EQ(overpay[term - 1], 520126.02);
-//   EXPECT_FLOAT_EQ(fullsum[term - 1], 2020126.02);
-// }
+  EXPECT_FLOAT_EQ(payment[0], 61215.94);
+  EXPECT_FLOAT_EQ(overpay[term - 1], 520126.02);
+  EXPECT_FLOAT_EQ(fullsum[term - 1], 2020126.02);
+}
 
-// TEST(Credit, Differ) {
-//   long double sum = 1000000;
-//   int64_t term = 21;
-//   double percent = 9.4, payment[term], overpay[term], fullsum[term];
-//   bool type = false;
-//   model.startCalculationCredit(sum, term, percent, type, payment, overpay,
-//                                     fullsum);
+TEST(Credit, Differ) {
+  long double sum = 1000000;
+  int64_t term = 21;
+  double percent = 9.4, payment[term], overpay[term], fullsum[term];
+  bool type = false;
+  model.calcMonthly(sum, term, percent, type, payment, overpay,
+                                    fullsum);
 
-//   EXPECT_FLOAT_EQ(payment[0], 55452.38);
-//   EXPECT_FLOAT_EQ(payment[term - 1], 47992.06);
-//   EXPECT_FLOAT_EQ(overpay[term - 1], 86166.67);
-//   EXPECT_FLOAT_EQ(fullsum[term - 1], 1086166.67);
-// }
+  EXPECT_FLOAT_EQ(payment[0], 55452.38);
+  EXPECT_FLOAT_EQ(payment[term - 1], 47992.06);
+  EXPECT_FLOAT_EQ(overpay[term - 1], 86166.67);
+  EXPECT_FLOAT_EQ(fullsum[term - 1], 1086166.67);
+}
 
 // TEST(Credit, Loan) {
 //   long double sum = 16643;

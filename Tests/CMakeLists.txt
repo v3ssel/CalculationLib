@@ -14,12 +14,13 @@ set(SOURCES
     ShuntingYardTests.cpp
     CalculationAlgorithmTests.cpp
     CalculationAlgorithmWithXWrapperTests.cpp
+    CreditMonthlyPaymentTests.cpp
 )
 
 add_executable(${PROJECT_NAME} ${SOURCES})
 
-
 target_link_libraries(${PROJECT_NAME}
     CalculationAlgorithm
+    CreditMonthlyPayment
     ${GTEST_LIBRARIES}
 )
