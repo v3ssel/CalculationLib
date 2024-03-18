@@ -10,8 +10,10 @@ find_package(GTest REQUIRED)
 set(SOURCES 
     unit-testing.cpp
 
-    ModelCalc.cpp
     Model.h
+    ModelCalc.cpp
+    ModelCredit.cpp
+    ModelDeposit.cpp
 )
 
 add_executable(${PROJECT_NAME} ${SOURCES})

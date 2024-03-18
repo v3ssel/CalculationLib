@@ -10,9 +10,14 @@ old:
 style:
 	clang-format -i --verbose --style=Webkit *.cpp Model/*.cpp Model/*.h
 
-lib:
+
+calc_lib:
 	cmake . -G "Unix Makefiles" -B $(BUILDDIR) && \
 	cmake --build $(BUILDDIR) --target CalculationLib --config Release
+
+credit_lib:
+	cmake . -G "Unix Makefiles" -B $(BUILDDIR) && \
+	cmake --build $(BUILDDIR) --target CreditLib --config Release
 
 
 tests:

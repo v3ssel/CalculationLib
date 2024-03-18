@@ -8,22 +8,26 @@
 #include "../CalculationAlgorithm/Handlers/FunctionsHandler.h"
 
 extern "C" {
+    void handleError(char** error_msg, const char* source) {
+        std::string error_str(source);
+
+        *error_msg = new char[error_str.length() + 1];
+        std::copy(error_str.begin(), error_str.end(), *error_msg);
+        (*error_msg)[error_str.length()] = '\0';
+    }
+
     __declspec(dllexport) double __cdecl Calculate(const char* expression, const char* x, char** error_msg) {
         try {
             return s21::CalculationLib::Instance().calculate(expression, x);
             
         } catch (std::exception& e) {
-            std::string error_str(e.what());
-
-            *error_msg = new char[error_str.length() + 1];
-            std::copy(error_str.begin(), error_str.end(), *error_msg);
-            (*error_msg)[error_str.length()] = '\0';
+            handleError(error_msg, e.what());
         }
         
         return 1;
     }
 
-    __declspec(dllexport) void __cdecl CalculateRange(int start, int end, const char* expression, int *size, double**data, char** error_msg) {
+    __declspec(dllexport) void __cdecl CalculateRange(int start, int end, const char* expression, int *size, double** data, char** error_msg) {
         try {
             std::vector<double> result = s21::CalculationLib::Instance().calculateRange(start, end, expression);
 
@@ -32,11 +36,7 @@ extern "C" {
             std::copy(result.begin(), result.end(), *data);
 
         } catch (std::exception& e) {
-            std::string error_str(e.what());
-
-            *error_msg = new char[error_str.length() + 1];
-            std::copy(error_str.begin(), error_str.end(), *error_msg);
-            (*error_msg)[error_str.length()] = '\0';
+            handleError(error_msg, e.what());
         }
     }
 }

@@ -46,12 +46,12 @@ class Model {
 public:
     double entryPoint(std::string& exp, const ld& x);
 
-    // void calcMonthly(ld&, int64_t&, double, bool&, double*, double*, double*);
-    // void calcLoan(ld&, int64_t&, double&, double&, double&, double&);
-    // void calcTerm(ld, double&, double&, int64_t&, double&, double&);
+    void calcMonthly(ld&, int64_t&, double, bool&, double*, double*, double*);
+    void calcLoan(ld&, int64_t&, double&, double&, double&, double&);
+    void calcTerm(ld, double&, double&, int64_t&, double&, double&);
 
-    // void depositCalc(ld&, int64_t&, bool&, int64_t*, size_t&, size_t&, ld*, ld&,
-    //     short&, bool&, int64_t*, ld*, ld*, ld*, ld*);
+    void depositCalc(ld&, int64_t&, bool&, int64_t*, size_t&, size_t&, ld*, ld&,
+        short&, bool&, int64_t*, ld*, ld*, ld*, ld*);
 
 // private:
     bool parseExpresssion_(const std::string& exp, const ld& x);
