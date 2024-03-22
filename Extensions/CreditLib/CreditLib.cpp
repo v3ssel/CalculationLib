@@ -4,6 +4,15 @@
 #include "../Credit/CreditMonthlyPaymentAnnuity.h"
 #include "../Credit/CreditMonthlyPaymentDifferentiated.h"
 
+#if defined(__WIN32__) 
+    #define CREDITLIB_EXPORT __declspec(dllexport)
+#elif defined(__GNUC__) 
+    #define CREDITLIB_EXPORT __attribute__((visibility("default")))
+#else 
+    #define CREDITLIB_EXPORT
+    #pragma warning Unknown dynamic link import/export semantics.
+#endif
+
 extern "C" {
     void copyVector(double** dest, std::vector<double>& src) {
         *dest = new double[src.size()];
@@ -18,7 +27,7 @@ extern "C" {
         (*error_msg)[error_str.length()] = '\0';
     }
 
-    __declspec(dllexport) void __cdecl CalculateAnnuity(double amount, double percent, int term, 
+    CREDITLIB_EXPORT void __cdecl CalculateAnnuity(double amount, double percent, int term, 
                                                         double** res_monthly_payment,
                                                         double** res_overpayment,
                                                         double** res_totalpayout, char** error_msg) {
@@ -33,7 +42,7 @@ extern "C" {
         }
     }
 
-    __declspec(dllexport) void __cdecl CalculateDifferentiated(double amount, double percent, int term,
+    CREDITLIB_EXPORT void __cdecl CalculateDifferentiated(double amount, double percent, int term,
                                                                double** res_monthly_payment,
                                                                double** res_overpayment,
                                                                double** res_totalpayout, char** error_msg) {
