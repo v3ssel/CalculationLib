@@ -9,7 +9,7 @@
     #define LIB_CALLCONV __cdecl
 #elif defined(__GNUC__) 
     #define LIB_EXPORT __attribute__((visibility("default")))
-    #define LIB_CALLCONV __attribute__((cdecl))
+    #define LIB_CALLCONV
 #else 
     #define LIB_EXPORT
     #define LIB_CALLCONV
