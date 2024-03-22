@@ -5,14 +5,14 @@
 #include "../Credit/CreditMonthlyPaymentDifferentiated.h"
 
 #if defined(__WIN32__) || defined(__APPLE__)
-    #define CREDITLIB_EXPORT __declspec(dllexport)
-    #define CREDITLIB_CALLCONV __cdecl
+    #define LIB_EXPORT __declspec(dllexport)
+    #define LIB_CALLCONV __cdecl
 #elif defined(__GNUC__) 
-    #define CREDITLIB_EXPORT __attribute__((visibility("default")))
-    #define CREDITLIB_CALLCONV __attribute__((cdecl))
+    #define LIB_EXPORT __attribute__((visibility("default")))
+    #define LIB_CALLCONV __attribute__((cdecl))
 #else 
-    #define CREDITLIB_EXPORT
-    #define CREDITLIB_CALLCONV
+    #define LIB_EXPORT
+    #define LIB_CALLCONV
     #pragma warning Unknown dynamic link import/export semantics.
 #endif
 
@@ -30,7 +30,7 @@ extern "C" {
         (*error_msg)[error_str.length()] = '\0';
     }
 
-    CREDITLIB_EXPORT void CREDITLIB_CALLCONV CalculateAnnuity(double amount, double percent, int term, 
+    LIB_EXPORT void LIB_CALLCONV CalculateAnnuity(double amount, double percent, int term, 
                                                         double** res_monthly_payment,
                                                         double** res_overpayment,
                                                         double** res_totalpayout, char** error_msg) {
@@ -45,7 +45,7 @@ extern "C" {
         }
     }
 
-    CREDITLIB_EXPORT void CREDITLIB_CALLCONV CalculateDifferentiated(double amount, double percent, int term,
+    LIB_EXPORT void LIB_CALLCONV CalculateDifferentiated(double amount, double percent, int term,
                                                                double** res_monthly_payment,
                                                                double** res_overpayment,
                                                                double** res_totalpayout, char** error_msg) {

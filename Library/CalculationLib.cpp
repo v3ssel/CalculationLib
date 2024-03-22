@@ -7,6 +7,18 @@
 #include "../CalculationAlgorithm/Handlers/OperatorsHandler.h"
 #include "../CalculationAlgorithm/Handlers/FunctionsHandler.h"
 
+#if defined(__WIN32__) || defined(__APPLE__)
+    #define LIB_EXPORT __declspec(dllexport)
+    #define LIB_CALLCONV __cdecl
+#elif defined(__GNUC__) 
+    #define LIB_EXPORT __attribute__((visibility("default")))
+    #define LIB_CALLCONV __attribute__((cdecl))
+#else 
+    #define LIB_EXPORT
+    #define LIB_CALLCONV
+    #pragma warning Unknown dynamic link import/export semantics.
+#endif
+
 extern "C" {
     void handleError(char** error_msg, const char* source) {
         std::string error_str(source);
@@ -16,7 +28,7 @@ extern "C" {
         (*error_msg)[error_str.length()] = '\0';
     }
 
-    __declspec(dllexport) double __cdecl Calculate(const char* expression, const char* x, char** error_msg) {
+    LIB_EXPORT double LIB_CALLCONV Calculate(const char* expression, const char* x, char** error_msg) {
         try {
             return s21::CalculationLib::Instance().calculate(expression, x);
             
@@ -27,7 +39,7 @@ extern "C" {
         return 1;
     }
 
-    __declspec(dllexport) void __cdecl CalculateRange(int start, int end, const char* expression, int *size, double** data, char** error_msg) {
+    LIB_EXPORT void LIB_CALLCONV CalculateRange(int start, int end, const char* expression, int *size, double** data, char** error_msg) {
         try {
             std::vector<double> result = s21::CalculationLib::Instance().calculateRange(start, end, expression);
 
