@@ -6,10 +6,13 @@
 
 #if defined(__WIN32__) 
     #define CREDITLIB_EXPORT __declspec(dllexport)
+    #define CREDITLIB_CALLCONV __cdecl
 #elif defined(__GNUC__) 
     #define CREDITLIB_EXPORT __attribute__((visibility("default")))
+    #define CREDITLIB_CALLCONV
 #else 
     #define CREDITLIB_EXPORT
+    #define CREDITLIB_CALLCONV
     #pragma warning Unknown dynamic link import/export semantics.
 #endif
 
@@ -27,7 +30,7 @@ extern "C" {
         (*error_msg)[error_str.length()] = '\0';
     }
 
-    CREDITLIB_EXPORT void __cdecl CalculateAnnuity(double amount, double percent, int term, 
+    CREDITLIB_EXPORT void CREDITLIB_CALLCONV CalculateAnnuity(double amount, double percent, int term, 
                                                         double** res_monthly_payment,
                                                         double** res_overpayment,
                                                         double** res_totalpayout, char** error_msg) {
@@ -42,7 +45,7 @@ extern "C" {
         }
     }
 
-    CREDITLIB_EXPORT void __cdecl CalculateDifferentiated(double amount, double percent, int term,
+    CREDITLIB_EXPORT void CREDITLIB_CALLCONV CalculateDifferentiated(double amount, double percent, int term,
                                                                double** res_monthly_payment,
                                                                double** res_overpayment,
                                                                double** res_totalpayout, char** error_msg) {
