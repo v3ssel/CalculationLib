@@ -13,9 +13,12 @@ public:
     using ETypes = ExpressionTypes;
 
     ExpressionHandler();
+    virtual ~ExpressionHandler() = default;
+    
     virtual ExpressionHandler* setNext(ExpressionHandler* handler);
     virtual HandleStatus handle(const std::string& expression, size_t& index, std::list<ExpressionToken>& list);
     virtual void clean();
+
 
 private:
     std::unique_ptr<ExpressionHandler> next_;

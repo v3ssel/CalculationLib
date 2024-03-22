@@ -8,6 +8,8 @@ class BaseCalculationAlgorithm {
 public:
     double calculate(const std::string& exp);
     const std::string& getExpression() const;
+    
+    virtual ~BaseCalculationAlgorithm() = default;
 
 protected:
     virtual void parseExpression() = 0;
