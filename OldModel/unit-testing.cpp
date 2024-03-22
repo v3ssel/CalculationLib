@@ -255,82 +255,91 @@ TEST(Credit, Differ) {
 //   EXPECT_FLOAT_EQ(fullsum, 700000);
 // }
 
-// TEST(Deposit, One) {
-//     long double amount = 340000, interestRate[] = {0, 14.3, 17, 25}, taxRate = 8,
-//                 RepWithValues[] = {-3000, 6000, 5000, -10000, -20000},
-//                 AccRate = 0, taxPaid = 0, resultSum = amount;
-//     int64_t term = 333,
-//             daysOrAmountRate[] = {1, 50, 150},
-//             DatesInDays[] = {4, 30, 50, 70, 150};
+TEST(Deposit, One) {
+    long double amount = 340000,
+                interestRate[] = {0, 14.3, 17, 25},
+                taxRate = 8,
+                RepWithValues[] = {-3000, 6000, 5000, -10000, -20000},
+                AccRate = 0, taxPaid = 0, resultSum = amount;
+
+    int64_t term = 333,
+            daysOrAmountRate[] = {1, 50, 150},
+            DatesInDays[] = {4, 30, 50, 70, 150};
             
-//     bool rateType = true, capitalism = true;
-//     size_t rateCounter = 3, size = 5;
-//     short period = 1;
-//     for (size_t i = 0; capitalism && i < size; i++)
-//         amount += RepWithValues[i];
+    bool rateType = true, capitalism = true;
+    size_t rateCounter = 3, size = 5;
+    short period = 1;
+
+    for (size_t i = 0; capitalism && i < size; i++)
+        amount += RepWithValues[i];
         
-//     model.startCalculationDeposit(
-//         amount, term, rateType, daysOrAmountRate, rateCounter, size,
-//         interestRate, taxRate, period, capitalism, DatesInDays, RepWithValues,
-//         &AccRate, &taxPaid, &resultSum);
+    model.depositCalc(
+        amount, term, rateType, daysOrAmountRate, rateCounter, size,
+        interestRate, taxRate, period, capitalism, DatesInDays, RepWithValues,
+        &AccRate, &taxPaid, &resultSum);
 
-//     EXPECT_FLOAT_EQ(AccRate, 68636.46);
-//     EXPECT_FLOAT_EQ(taxPaid, 0.00);
-//     EXPECT_FLOAT_EQ(resultSum, 386636.46);
-// }
+    EXPECT_FLOAT_EQ(AccRate, 68636.46);
+    EXPECT_FLOAT_EQ(taxPaid, 0.00);
+    EXPECT_FLOAT_EQ(resultSum, 386636.46);
+}
 
-// TEST(Deposit, Two) {
-//     long double amount = 700000, interestRate[] = {0, 25, 45, 35}, taxRate = 5,
-//     RepWithValues[] = {10000, -6000, -5000, -10000, 20000},
-//     AccRate = 0, taxPaid = 0, resultSum = amount;
+TEST(Deposit, Two) {
+    long double amount = 700000,
+                interestRate[] = {0, 25, 45, 35},
+                taxRate = 5,
+                RepWithValues[] = {10000, -6000, -5000, -10000, 20000},
+                AccRate = 0, taxPaid = 0, resultSum = amount;
 
-//     int64_t term = 400, daysOrAmountRate[] = {700000, 800000, 1000000},
-//     DatesInDays[] = {10, 50, 100, 150, 200};
+    int64_t term = 400,
+            daysOrAmountRate[] = {700000, 800000, 1000000},
+            DatesInDays[] = {10, 50, 100, 150, 200};
     
-//     bool rateType = false, capitalism = true;
-//     size_t rateCounter = 3, size = 5;
-//     short period = 1;
+    bool rateType = false, capitalism = true;
+    size_t rateCounter = 3, size = 5;
+    short period = 1;
     
-//     for (size_t i = 0; capitalism && i < size; i++)
-//         amount += RepWithValues[i];
+    for (size_t i = 0; capitalism && i < size; i++)
+        amount += RepWithValues[i];
     
-//     model.startCalculationDeposit(
-//         amount, term, rateType, daysOrAmountRate, rateCounter, size,
-//         interestRate, taxRate, period, capitalism, DatesInDays, RepWithValues,
-//         &AccRate, &taxPaid, &resultSum);
+    model.depositCalc(
+        amount, term, rateType, daysOrAmountRate, rateCounter, size,
+        interestRate, taxRate, period, capitalism, DatesInDays, RepWithValues,
+        &AccRate, &taxPaid, &resultSum);
 
-//     EXPECT_FLOAT_EQ(AccRate, 321408.00);
-//     EXPECT_FLOAT_EQ(taxPaid, 35283.05);
-//     EXPECT_FLOAT_EQ(resultSum, 1030408.10);
-// }
+    EXPECT_FLOAT_EQ(AccRate, 321408.00);
+    EXPECT_FLOAT_EQ(taxPaid, 35283.05);
+    EXPECT_FLOAT_EQ(resultSum, 1030408.10);
+}
 
-// TEST(Deposit, Three) {
-//     long double amount = 700000, interestRate[] = {0, 25, 45, 35}, taxRate = 5,
-//                 RepWithValues[] = {10000, -6000, -5000, -10000, 20000},
-//                 AccRate = 0, taxPaid = 0, resultSum = amount;
-//     int64_t term = 400,
-//             daysOrAmountRate[] = {700000, 800000, 1000000},
-//             DatesInDays[] = {10, 50, 100, 150, 200};
+TEST(Deposit, Three) {
+    long double amount = 700000,
+                interestRate[] = {0, 25, 45, 35},
+                taxRate = 5,
+                RepWithValues[] = {10000, -6000, -5000, -10000, 20000},
+                AccRate = 0, taxPaid = 0, resultSum = amount;
 
-//     bool rateType = false, capitalism = false;
-//     size_t rateCounter = 3, size = 5;
-//     short period = 1;
+    int64_t term = 400,
+            daysOrAmountRate[] = {700000, 800000, 1000000},
+            DatesInDays[] = {10, 50, 100, 150, 200};
 
-//     for (size_t i = 0; capitalism && i < size; i++)
-//         amount += RepWithValues[i];
+    bool rateType = false, capitalism = false;
+    size_t rateCounter = 3, size = 5;
+    short period = 1;
+
+    for (size_t i = 0; capitalism && i < size; i++)
+        amount += RepWithValues[i];
         
-//     model.startCalculationDeposit(
-//         amount, term, rateType, daysOrAmountRate, rateCounter, size,
-//         interestRate, taxRate, period, capitalism, DatesInDays, RepWithValues,
-//         &AccRate, &taxPaid, &resultSum);
+    model.depositCalc(
+        amount, term, rateType, daysOrAmountRate, rateCounter, size,
+        interestRate, taxRate, period, capitalism, DatesInDays, RepWithValues,
+        &AccRate, &taxPaid, &resultSum);
 
-//     EXPECT_FLOAT_EQ(AccRate, 193019.86);
-//     EXPECT_FLOAT_EQ(taxPaid, 18592.58);
-//     EXPECT_FLOAT_EQ(resultSum, 709000.00);
-// }
+    EXPECT_FLOAT_EQ(AccRate, 193019.86);
+    EXPECT_FLOAT_EQ(taxPaid, 18592.58);
+    EXPECT_FLOAT_EQ(resultSum, 709000.00);
+}
 
-int main(int argc, char** argv)
-{
+int main(int argc, char** argv) {
     testing::InitGoogleTest(&argc, argv);
     return RUN_ALL_TESTS();
 }

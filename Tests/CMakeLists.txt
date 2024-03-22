@@ -15,6 +15,7 @@ set(SOURCES
     CalculationAlgorithmTests.cpp
     CalculationAlgorithmWithXWrapperTests.cpp
     CreditMonthlyPaymentTests.cpp
+    DepositCalculatorTests.cpp
 )
 
 add_executable(${PROJECT_NAME} ${SOURCES})
@@ -22,5 +23,6 @@ add_executable(${PROJECT_NAME} ${SOURCES})
 target_link_libraries(${PROJECT_NAME}
     CalculationAlgorithm
     CreditMonthlyPayment
+    DepositCalculator
     ${GTEST_LIBRARIES}
 )

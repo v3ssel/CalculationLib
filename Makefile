@@ -13,16 +13,20 @@ style:
 
 calc_lib:
 	cmake . -G "Unix Makefiles" -B $(BUILDDIR) && \
-	cmake --build $(BUILDDIR) --target CalculationLib --config Release
+	cmake --build $(BUILDDIR) --target CalculationLib --config=Release
 
 credit_lib:
 	cmake . -G "Unix Makefiles" -B $(BUILDDIR) && \
-	cmake --build $(BUILDDIR) --target CreditLib --config Release
+	cmake --build $(BUILDDIR) --target CreditLib --config=Release
+
+deposit_lib:
+	cmake . -G "Unix Makefiles" -B $(BUILDDIR) && \
+	cmake --build $(BUILDDIR) --target DepositCalculator --config=Debug
 
 
 tests:
 	cmake . -G "Unix Makefiles" -B $(BUILDDIR) && \
-	cmake --build $(BUILDDIR) --target CalculationAlgorithmTests --config RelWithDebInfo
+	cmake --build $(BUILDDIR) --target CalculationAlgorithmTests --config=RelWithDebInfo
 	
 bee:
 	cmake . -G "Unix Makefiles" -B $(BUILDDIR) && \

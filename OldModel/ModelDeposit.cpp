@@ -37,20 +37,22 @@ void Model::depositCalc(long double& amount,
             }
         }
 
-        if ((i >= (rateCounter == 1 ? *daysOrAmountRate : *(daysOrAmountRate - 1)) && rateType) || (((*resultSum <= *daysOrAmountRate) || (*resultSum >= *daysOrAmountRate && *daysOrAmountRate == lastAmount)) && !rateType)) {
-            if (capitalism) {
+        // if ((i >= (rateCounter == 1 ? *daysOrAmountRate : *(daysOrAmountRate - 1)) && rateType) || (((*resultSum <= *daysOrAmountRate) || (*resultSum >= *daysOrAmountRate && *daysOrAmountRate == lastAmount)) && !rateType)) {
+            // if (capitalism) {
                 *AccRate += *resultSum / 100.0 * *interestRate / 365.0;
-                if (i % period == 0) {
+
+                if (capitalism && i % period == 0) {
                     *resultSum += *AccRate;
                     *AccRate = 0;
                 }
+                
                 if (i == termDays) {
                     *resultSum += *resultSum / 100.0 * *interestRate / 365.0 * (termDays % period);
                 }
-            } else {
-                *AccRate += *resultSum / 100.0 * *interestRate / 365.0;
-            }
-        }
+            // } else {
+            //     *AccRate += *resultSum / 100.0 * *interestRate / 365.0;
+            // }
+        // }
     }
 
     if (capitalism)
