@@ -4,12 +4,12 @@
 #include "../Credit/CreditMonthlyPaymentAnnuity.h"
 #include "../Credit/CreditMonthlyPaymentDifferentiated.h"
 
-#if defined(__WIN32__) 
+#if defined(__WIN32__) || defined(__APPLE__)
     #define CREDITLIB_EXPORT __declspec(dllexport)
     #define CREDITLIB_CALLCONV __cdecl
 #elif defined(__GNUC__) 
     #define CREDITLIB_EXPORT __attribute__((visibility("default")))
-    #define CREDITLIB_CALLCONV
+    #define CREDITLIB_CALLCONV __attribute__((cdecl))
 #else 
     #define CREDITLIB_EXPORT
     #define CREDITLIB_CALLCONV
