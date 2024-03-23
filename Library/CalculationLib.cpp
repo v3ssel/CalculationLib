@@ -20,7 +20,7 @@
 #endif
 
 extern "C" {
-    void handleError(char** error_msg, const char* source) {
+    static void handleError(char** error_msg, const char* source) {
         std::string error_str(source);
 
         *error_msg = new char[error_str.length() + 1];

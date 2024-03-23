@@ -17,12 +17,12 @@
 #endif
 
 extern "C" {
-    void copyVector(double** dest, std::vector<double>& src) {
+    static void copyVector(double** dest, std::vector<double>& src) {
         *dest = new double[src.size()];
         std::copy(src.begin(), src.end(), *dest);
     }
 
-    void handleError(char** error_msg, const char* source) {
+    static void handleError(char** error_msg, const char* source) {
         std::string error_str(source);
 
         *error_msg = new char[error_str.length() + 1];
