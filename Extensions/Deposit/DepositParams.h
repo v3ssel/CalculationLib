@@ -5,6 +5,9 @@ namespace s21 {
     struct DepositParams {
         double start_amount;
         int term_in_days;
+        int term_begin_day;
+        int term_begin_month;
+        int term_begin_year;
         double tax_rate;
         int periodicity;
         bool capitalization;

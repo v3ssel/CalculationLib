@@ -11,6 +11,7 @@ namespace s21 {
 class ExpressionParser {
 public:
     ExpressionParser(ExpressionHandler* handler);
+    virtual ~ExpressionParser() = default;
 
     virtual std::stack<ExpressionToken> parse(const std::string& expression);
 private:

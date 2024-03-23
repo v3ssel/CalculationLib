@@ -10,6 +10,7 @@ namespace s21 {
     public:
         CalculationAlgorithmWithXWrapper(BaseCalculationAlgorithm* algorithm,
                                          ExpressionPreparator* preparator);
+        virtual ~CalculationAlgorithmWithXWrapper() = default;
 
         virtual double calculate(const std::string &expression, const std::string &x = "");
 

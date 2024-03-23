@@ -6,6 +6,7 @@
 namespace s21 {
     class ExpressionPreparator {
     public:
+        virtual ~ExpressionPreparator() = default;
         virtual std::string prepare(const std::string &expression, const std::string& x);
 
     private:

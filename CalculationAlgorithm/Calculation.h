@@ -7,9 +7,11 @@
 
 namespace s21 {
     class Calculation {
-        using ETypes = ExpressionTypes;
-
     public:
+        using ETypes = ExpressionTypes;
+        
+        virtual ~Calculation() = default;
+
         virtual std::queue<ExpressionToken> toPostfix(std::stack<ExpressionToken>& expression);
         virtual double calculate(std::queue<ExpressionToken>& postfix_expression);
     
