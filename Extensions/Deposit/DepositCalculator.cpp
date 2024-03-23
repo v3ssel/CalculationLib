@@ -37,7 +37,7 @@ DepositResult DepositCalculator::calculate(const DepositParams &params) {
         
         // take next rate if have it
         if (current_rate_index < params.count_of_rates &&
-            ((params.rate_type == 2 && day == params.rate_dependence_values[current_rate_index]) ||
+            ((params.rate_type == 2 && day >= params.rate_dependence_values[current_rate_index]) ||
              (params.rate_type != 2 && result.total_amount >= params.rate_dependence_values[current_rate_index]))) {
             current_rate_value = params.rates[current_rate_index];
             current_rate_index++;
