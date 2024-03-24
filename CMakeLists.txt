@@ -5,10 +5,10 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR})
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR})
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR})
 
-if (UNIX)
-    add_compile_options(-fPIC)
-elseif(APPLE)
+if (APPLE)
     add_compile_options(-fdeclspec)
+elseif(UNIX)
+    add_compile_options(-fPIC)
 endif()
 
 add_subdirectory(CalculationAlgorithm)
